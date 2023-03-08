@@ -85,7 +85,8 @@ def receipt_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, re
     #Informs the program the the operation full success
     return "Required receipts successfuly created and sent"
 
-
+input_folder = "/backend/application/documents_template"
+output_folder = "/backend/application/documents_output"
 
 class Receipt_editor():
 
@@ -118,7 +119,7 @@ class Receipt_editor():
             mois = months[month].split(" ")[-1]
 
             #Selection of the appropriate template
-            document = MailMerge("./documents_template/rent_receipt_template.docx")
+            document = MailMerge(f".{input_folder}/rent_receipt_template.docx")
             
             #Merger of the apartment and tenant data into the receipt template
             document.merge(
@@ -138,7 +139,7 @@ class Receipt_editor():
                 )
 
             #Save the document in a .docx format
-            document.write(f"./documents_output/{tenant.lastname}_{tenant.firstname}_Quittance_de_loyer_{mois}_{year}.docx")
+            document.write(f".{output_folder}/{tenant.lastname}_{tenant.firstname}_Quittance_de_loyer_{mois}_{year}.docx")
 
 
 

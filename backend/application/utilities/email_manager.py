@@ -6,6 +6,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+output_folder = "/backend/application/documents_output"
 
 class Email_manager:
 
@@ -24,10 +25,10 @@ class Email_manager:
 
         # Add all attachments in the documents output folder
         if email_attachments == True:
-            print('Attachements', os.listdir("./documents_output"))
-            for file in os.listdir("./documents_output"):
+            print('Attachements', os.listdir(f".{output_folder}"))
+            for file in os.listdir(f".{output_folder}"):
                 
-                filename = f"./documents_output/{file}"
+                filename = f".{output_folder}/{file}"
 
                 with open(filename, "rb") as attachment:
                     part = MIMEBase("application", "octet-stream")
@@ -67,5 +68,5 @@ class Email_manager:
     def clear_documents_output_folder() -> None:
         """Delete all leftover files from the output folder"""
 
-        for file in os.listdir("./documents_output"):
-            os.remove(f"./documents_output/{file}")
+        for file in os.listdir(f".{output_folder}"):
+            os.remove(f".{output_folder}/{file}")

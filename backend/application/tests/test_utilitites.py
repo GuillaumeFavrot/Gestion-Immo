@@ -67,10 +67,10 @@ def test_id_gen_reliability() -> None:
 #Tests the pdf converter utility
 def test_pdf_converter() -> None:
     """Checks that the pdf_converter function properly convert all .docx files in the documents_output folder to pdf"""
-    f = open("./documents_output/test.docx", "x")
+    f = open("./backend/application/documents_output/test.docx", "x")
     f.close()
     convert_documents_to_pdf()
-    assert str(os.listdir("./documents_output")[0]).endswith("pdf")
+    assert str(os.listdir("./backend/application/documents_output")[0]).endswith("pdf")
 
 #Tests the email manager
 email = Email_manager.create_email("dev.mail.python.68@gmail.com", "Test", "Test", email_attachments=True)
@@ -91,7 +91,7 @@ def test_email_manager_successful_sending() -> None:
 def test_clear_documents_output_folder() -> None:
     """Checks that the the email manager clear method properly cleans the documents_output folder"""
     Email_manager.clear_documents_output_folder()
-    assert len(os.listdir("./documents_output")) == 0
+    assert len(os.listdir("./backend/application/documents_output")) == 0
 
 #Test the input checker
 def test_input_checker_success() -> None:

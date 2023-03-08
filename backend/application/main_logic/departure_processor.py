@@ -61,6 +61,8 @@ def departure_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame) 
     #Informs the program the the operation full success
     return "Departure successfuly processed"
 
+input_folder = "/backend/application/documents_template"
+output_folder = "/backend/application/documents_output"
 
 class Balance_editor():
 
@@ -68,7 +70,7 @@ class Balance_editor():
         """Create a tenant departure balance in .docx format"""
         
         #Definition of the document template path
-        document = MailMerge("./documents_template/departure_balance_template.docx")
+        document = MailMerge(f".{input_folder}/departure_balance_template.docx")
         
         #Definition of the departure balance result 
         result = "L'ensemble de vos créances ont été règlées"
@@ -94,5 +96,5 @@ class Balance_editor():
             )
             
         #Save the document in a .docx format
-        document.write(f"./documents_output/{tenant.lastname}_{tenant.firstname}_Balance_des_comptes.docx")
+        document.write(f".{output_folder}/{tenant.lastname}_{tenant.firstname}_Balance_des_comptes.docx")
 
