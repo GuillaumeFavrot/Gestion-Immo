@@ -3,7 +3,6 @@
 This template has been created as a tool to speed up the process of creation and hosting of a fullstack app.
 
 
-
 ## Stack description
 
 Frontend - React, Redux, Bootstrap
@@ -190,4 +189,9 @@ The "create_DB" command need to be launched only once! Using it again will re-cr
 
 To take down the app open a terminal in the root folder of the app and run the following command :
 
-$ docker-compose down                
+$ docker-compose down                                                                                                                                                   ...$
+
+
+# Application specific details
+
+pytest --cov=. --cov-report term-missing -p no:faulthandler

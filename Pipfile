@@ -27,6 +27,12 @@ sqlalchemy = "*"
 flask-cors = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+pandas = "*"
+docx-mailmerge = "*"
+msoffice2pdf = "*"
+comtypes = "*"
+pytest = "*"
+pytest-cov = "*"
 
 [dev-packages]
 
