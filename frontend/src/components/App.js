@@ -1,26 +1,20 @@
 // The App.js file is the main component of the app.
 // All other components are organized inside this App.js file.
 
-import React from 'react'
-import Test from './Test'
-import { useEffect } from 'react'
-import { getTestMessage } from './state/features/testSlice'
-import { useDispatch } from 'react-redux'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./header/Header";
+import Footer from "./footer/Footer";
+import Body from "./body/Body";
 
 function App() {
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getTestMessage())
-  }, [])
-
   return (
-    <div className='application container d-flex justify-content-center align-items-center'>
-      <Test />
+    <div className="application d-flex flex-column">
+      <Header />
+      <Body />
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

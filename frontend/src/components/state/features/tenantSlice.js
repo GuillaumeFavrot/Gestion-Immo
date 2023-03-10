@@ -1,0 +1,132 @@
+import { createSlice } from "@reduxjs/toolkit";
+
+const tenantSlice = createSlice({
+  name: "tenants",
+  initialState: {
+    headings: {
+      id: "ID",
+      lastname: "Nom de famille",
+      firstname: "Prénom",
+      email: "Email",
+      caf_payment: "APL",
+    },
+    deposit_headings: {
+      id: "ID",
+      apartment_id: "ID Logement",
+      total_amount: "Montant total",
+      paid_amount: "Montant réglé",
+      status: "Status",
+    },
+    rent_headings: {
+      id: "ID",
+      apartment_id: "ID Logement",
+      total_amount: "Montant total",
+      paid_amount: "Montant réglé",
+      issue_date: "Date d'émission",
+      due_date: "Date d'échéance",
+      period: "Période",
+    },
+
+    tenant: {
+      firstname: "Jean",
+      lastname: "Valjean",
+      email: "jean.valjean@gmail.com",
+      caf_payment: "True",
+      id: "#856",
+      apartments: [
+        {
+          id: "#12",
+          address_1: "22 rue des accacias",
+          address_2: "Cedex 36",
+          zipcode: "68300",
+          city: "Mulhouse",
+          in_management: "True",
+          monthly_charges: 50.0,
+          monthly_rent: 800.0,
+          deposit: 850.0,
+          in_management: "True",
+          management_fees: 64.0,
+        },
+      ],
+      deposit_bills: [
+        {
+          id: "#12333",
+          apartment_id: "#12",
+          tenant_id: "#856",
+          total_amount: 850.0,
+          paid_amount: 0.0,
+          paid: false,
+          issue_date: Date.now(),
+          due_date: Date.now(),
+          deposit_amount: 850.0,
+          status: "active",
+          refunded: false,
+        },
+      ],
+      rent_bills: [
+        {
+          id: "#12333",
+          apartment_id: "#12",
+          tenant_id: "#856",
+          total_amount: 850.0,
+          paid_amount: 850.0,
+          paid: true,
+          issue_date: Date.now(),
+          due_date: Date.now(),
+          rent_amount: 800.0,
+          charges: 50.0,
+          management_fees: 64,
+          period: "january_2023",
+        },
+        {
+          id: "#12335",
+          apartment_id: "#12",
+          tenant_id: "#856",
+          total_amount: 850.0,
+          paid_amount: 0.0,
+          paid: false,
+          issue_date: Date.now(),
+          due_date: Date.now(),
+          rent_amount: 800.0,
+          charges: 50.0,
+          management_fees: 64,
+          period: "february_2023",
+        },
+      ],
+    },
+
+    tenants: [
+      {
+        firstname: "Jean",
+        lastname: "Valjean",
+        email: "jean.valjean@gmail.com",
+        caf_payment: "True",
+        id: "#856",
+      },
+      {
+        firstname: "Antoine",
+        lastname: "Dupont",
+        email: "antoine.dupont@gmail.com",
+        caf_payment: "False",
+        id: "#1",
+      },
+      {
+        firstname: "Jacques",
+        lastname: "Chirac",
+        email: "jacques.chirac@gmail.com",
+        caf_payment: "False",
+        id: "#666",
+      },
+      {
+        firstname: "John",
+        lastname: "Doe",
+        email: "john.doe@gmail.com",
+        caf_payment: "True",
+        id: "#123",
+      },
+    ],
+  },
+  reducers: {},
+});
+
+export default tenantSlice.reducer;

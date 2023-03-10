@@ -3,8 +3,49 @@ This app uses Bootstrap for quick CSS formatting however if specific custom CSS 
 If a rule written in this file does not properly apply to the app it's because bootstrap rules usually take priority.
 To override this default behavior add '!important' at the end of a rule to give it priority
 */
- 
+
 .application {
-  width: 100% !important;
-  height: 100vh !important;
+  min-height: 100vh;
+}
+
+.header {
+  height: 70px;
+}
+
+.footer {
+  height: 55px;
+}
+
+.body {
+  flex-grow: 1;
+  padding-top: 70px;
+}
+
+h1 {
+  font-size: 30px !important;
+}
+
+.page {
+  flex-grow: 1;
+  padding: 10px;
+}
+
+btn-footer {
+  margin: 0px;
+  padding: 0px;
+}
+
+.bi {
+  margin-bottom: 2px;
+}
+
+.heading {
+  text-align: center;
+  background-color: green;
+}
+
+.btn_table {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
 }
