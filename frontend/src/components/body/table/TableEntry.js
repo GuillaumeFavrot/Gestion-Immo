@@ -28,7 +28,7 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
       ))}
       <td className={consult == true ? "" : "d-none"}>
         <button
-          className={`btn btn_table text-${theme.text}`}
+          className={`btn-table text-${theme.text}`}
           onClick={(e) => pageRequest(e)}
         >
           <svg
@@ -36,7 +36,7 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
             width="20"
             height="20"
             fill="currentColor"
-            class="bi bi-arrow-right-circle test3"
+            class="bi bi-arrow-right-circle btn-icon"
             viewBox="0 0 16 16"
           >
             <path
@@ -50,7 +50,7 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
       <td className={pay == true ? "" : "d-none"}>
         <button
           className={
-            entry.paid == true ? "d-none" : `btn btn_table text-${theme.text}`
+            entry.paid == true ? "d-none" : `btn-table text-${theme.text}`
           }
           onClick={(e) => pageRequest(e)}
         >
@@ -59,7 +59,7 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
             width="20"
             height="20"
             fill="currentColor"
-            class="bi bi-arrow-right-circle test3"
+            className="bi bi-arrow-right-circle btn-icon"
             viewBox="0 0 16 16"
           >
             <path
@@ -71,13 +71,13 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
       </td>
 
       <td className={deletion == true ? "" : "d-none"}>
-        <button className="btn btn_table text-danger">
+        <button className="btn-table text-danger">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
             fill="currentColor"
-            className="bi bi-x-circle ms-2  test3"
+            className="bi bi-x-circle ms-2 btn-icon"
             viewBox="0 0 16 16"
           >
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />

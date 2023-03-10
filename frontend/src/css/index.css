@@ -44,8 +44,11 @@ btn-footer {
   background-color: green;
 }
 
-.btn_table {
+.btn-table {
   margin: 0px;
   padding: 0px;
   width: 100%;
+  height: 20px;
+  background: none;
+  border: none;
 }
