@@ -1,12 +1,12 @@
 from pandas import DataFrame
 
-from utilities.pdf_converter import convert_documents_to_pdf
-from utilities.email_manager import Email_manager
+from backend.application.utilities.pdf_converter import convert_documents_to_pdf
+from backend.application.utilities.email_manager import Email_manager
 
-from models.apartment import Apartment
-from models.tenant import Tenant
+from backend.application.models.apartment import Apartment
+from backend.application.models.tenant import Tenant
 
-from utilities.editor_input_checker import editor_input_checks_suite
+from backend.application.utilities.editor_input_checker import editor_input_checks_suite
 
 from mailmerge import MailMerge
 

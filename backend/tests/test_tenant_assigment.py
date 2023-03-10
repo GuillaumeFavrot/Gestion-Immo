@@ -1,11 +1,11 @@
-from models.tenant import Tenant
-from models.apartment import Apartment
-
-from main_logic.tenant_assignment import tenant_assignment
-
-from models.bill import Deposit_bill
-
 from datetime import datetime
+
+from backend.application.models.tenant import Tenant
+from backend.application.models.apartment import Apartment
+
+from backend.application.main_logic.tenant_assignment import tenant_assignment
+
+from backend.application.models.bill import Deposit_bill
 
 a = Apartment(
         id="Test_id",

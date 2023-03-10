@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { createTenant } from "../../state/features/tenantSlice";
 
 function TenantForm() {
   //Application state
@@ -49,7 +50,7 @@ function TenantForm() {
       caf_payment: caf_payment,
       apl_amount: apl_amount,
     };
-    console.log(data);
+    dispatch(createTenant(data))
   };
 
   return (

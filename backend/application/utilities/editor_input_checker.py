@@ -1,8 +1,8 @@
 #!/bin/python
 from pandas import DataFrame
 
-from models.tenant import Tenant
-from models.apartment import Apartment
+from backend.application.models.tenant import Tenant
+from backend.application.models.apartment import Apartment
 
 def editor_input_checks_suite(tenant: Tenant, apartment: Apartment, rents: DataFrame) -> str:
     """Runs a few checks to ensure that receipt and balance editors receive valid arguments"""

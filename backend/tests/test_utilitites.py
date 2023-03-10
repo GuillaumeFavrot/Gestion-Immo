@@ -4,15 +4,15 @@ import pandas as pd
 
 from email.mime.multipart import MIMEMultipart
 
-from models.tenant import Tenant
-from models.apartment import Apartment
-from models.bill import Rent_bill
+from backend.application.models.tenant import Tenant
+from backend.application.models.apartment import Apartment
+from backend.application.models.bill import Rent_bill
 
 
-from utilities.email_manager import Email_manager
-from utilities.id_generator import id_gen
-from utilities.pdf_converter import convert_documents_to_pdf
-from utilities.editor_input_checker import editor_input_checks_suite
+from backend.application.utilities.email_manager import Email_manager
+from backend.application.utilities.id_generator import id_gen
+from backend.application.utilities.pdf_converter import convert_documents_to_pdf
+from backend.application.utilities.editor_input_checker import editor_input_checks_suite
 
 a = Apartment(
         id="Test_id",

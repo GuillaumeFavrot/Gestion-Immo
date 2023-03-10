@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from models.tenant import Tenant
+from backend.application.models.tenant import Tenant
 
 class Payment(ABC):
     """Abstract class of the payment method factory"""

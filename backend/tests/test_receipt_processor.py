@@ -1,12 +1,12 @@
 import pandas as pd
 
-from utilities.id_generator import id_gen
+from backend.application.utilities.id_generator import id_gen
 
-from models.tenant import Tenant
-from models.apartment import Apartment
-from models.bill import Rent_bill
+from backend.application.models.tenant import Tenant
+from backend.application.models.apartment import Apartment
+from backend.application.models.bill import Rent_bill
 
-from main_logic.receipt_processor import *
+from backend.application.main_logic.receipt_processor import *
 
 a = Apartment(
         id="Test_id",

@@ -2,10 +2,10 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from datetime import date, datetime, timedelta
 
-from models.tenant import Tenant
-from models.enums.enums import Deposit_status
+from backend.application.models.tenant import Tenant
+from backend.application.models.enums.enums import Deposit_status
 
-from main_logic.payment import Payment
+from backend.application.main_logic.payment import Payment
 
 @dataclass
 class Bill(ABC):

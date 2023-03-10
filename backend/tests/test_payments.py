@@ -1,17 +1,17 @@
 from datetime import datetime
 import pandas as pd
 
-from utilities.id_generator import id_gen
+from backend.application.utilities.id_generator import id_gen
 
-from models.enums.enums import Inventory_type
+from backend.application.models.enums.enums import Inventory_type
 
-from models.tenant import Tenant
-from models.apartment import Apartment
-from models.inventory import Inventory
-from models.bill import Rent_bill
+from backend.application.models.tenant import Tenant
+from backend.application.models.apartment import Apartment
+from backend.application.models.inventory import Inventory
+from backend.application.models.bill import Rent_bill
 
-from main_logic.rent_bill_creator import rent_bill_creator
-from main_logic.payment_processor import payment_processor
+from backend.application.main_logic.rent_bill_creator import rent_bill_creator
+from backend.application.main_logic.payment_processor import payment_processor
 
 a = Apartment(
         address_1="12 rue du marais",

@@ -1,7 +1,7 @@
 #!/bin/python
 from dataclasses import dataclass
-from models.enums.enums import Tenant_data_type
-from utilities.id_generator import id_gen
+from backend.application.models.enums.enums import Tenant_data_type
+from backend.application.utilities.id_generator import id_gen
 
 @dataclass
 class Tenant :

@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-from utilities.id_generator import id_gen
+from backend.application.utilities.id_generator import id_gen
 
-from models.tenant import Tenant
-from models.bill import Bill, Deposit_bill
-from models.enums.enums import Apartment_fiancial_data
+from backend.application.models.tenant import Tenant
+from backend.application.models.enums.enums import Apartment_fiancial_data
 
 @dataclass
 class Apartment:

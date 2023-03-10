@@ -1,9 +1,9 @@
 from datetime import date
-from utilities.id_generator import id_gen
+from backend.application.utilities.id_generator import id_gen
 
-from models.apartment import Apartment
-from models.tenant import Tenant
-from models.bill import Deposit_bill
+from backend.application.models.apartment import Apartment
+from backend.application.models.tenant import Tenant
+from backend.application.models.bill import Deposit_bill
 
 def tenant_assignment(apartment: Apartment, tenant: Tenant, entry_date: date):
     """Handles the assignment process of a tenant to an apartment"""

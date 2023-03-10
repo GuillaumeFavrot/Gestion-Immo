@@ -1,8 +1,8 @@
 
-from main_logic.payment import Direct_payment, CAF_Combined_Payment
+from backend.application.main_logic.payment import Direct_payment, CAF_Combined_Payment
 
-from models.tenant import Tenant
-from models.bill import Bill
+from backend.application.models.tenant import Tenant
+from backend.application.models.bill import Bill
 
 def payment_processor(tenant: Tenant, bill: Bill, paid_amount) -> None:
     """Handles the selection of the right payment method for the tenant using the payment method factory and proceeds with the payment"""

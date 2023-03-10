@@ -1,9 +1,9 @@
 #!/bin/python
 from dataclasses import dataclass
 from datetime import date
-from utilities.id_generator import id_gen
+from backend.application.utilities.id_generator import id_gen
 
-from models.enums.enums import Inventory_type
+from backend.application.models.enums.enums import Inventory_type
 
 @dataclass
 class Inventory:

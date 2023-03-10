@@ -1,16 +1,16 @@
 from datetime import datetime
 
-from utilities.id_generator import id_gen
+from backend.application.utilities.id_generator import id_gen
 
-from models.enums.enums import Inventory_type
-from models.enums.enums import Apartment_fiancial_data
-from models.enums.enums import Tenant_data_type
+from backend.application.models.enums.enums import Inventory_type
+from backend.application.models.enums.enums import Apartment_fiancial_data
+from backend.application.models.enums.enums import Tenant_data_type
 
-from models.tenant import Tenant
-from models.apartment import Apartment
-from models.inventory import Inventory
-from models.bill import Rent_bill
-from models.bill import Deposit_bill
+from backend.application.models.tenant import Tenant
+from backend.application.models.apartment import Apartment
+from backend.application.models.inventory import Inventory
+from backend.application.models.bill import Rent_bill
+from backend.application.models.bill import Deposit_bill
 
 a = Apartment(
         address_1="12 rue du marais",
