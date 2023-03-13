@@ -2,9 +2,8 @@
 
 from flask import Blueprint, send_from_directory, request
 from backend.exts import db
-# from backend.models.messages import Message
-# from backend.schemas.messageSchema import messages_schema
 from backend.application.models.tenant import Tenant
+from backend.schemas.tenant_schema import tenants_schema
 import backend.config as config
 
 #Creation of the blueprint
@@ -21,18 +20,23 @@ def index():
     return send_from_directory(config.static_folder_path, 'index.html')
 
 
+### CRUD routes
 
+## @/api/tenants 
 
-# CRUD routes
- 
-# Create a message
+# Get all tenants
+@routes.route("/api/tenants", methods=['GET'])
+def get_tenants():
 
+    tenants = Tenant.query.all()
+
+    return tenants_schema.dump(tenants)
+
+# Create a Tenant
 @routes.route("/api/tenants", methods=['POST'])
 def create_tenant():
-    print(request)
+
     data = request.json
-    print(data)
-    # new_message = Message(message)
 
     tenant = Tenant(
         firstname=data["firstname"],
@@ -41,13 +45,17 @@ def create_tenant():
         caf_payment=data["caf_payment"],
         apl_amount=data["apl_amount"]
     )
-    print(tenant)
-    # db.session.add(new_message)
-    # db.session.commit()
 
-    # messages = Message.query.all()
+    db.session.add(tenant)
+    db.session.commit()
 
-    return ""
+    tenants = Tenant.query.all()
+
+    return tenants_schema.dump(tenants)
+
+## @/api/apartments
+# Get all apartments
+
 
 #Get all messages
 

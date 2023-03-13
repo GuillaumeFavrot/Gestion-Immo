@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from abc import ABC, abstractmethod
+from abc import ABC
 from datetime import date, datetime, timedelta
 
 from backend.application.models.tenant import Tenant

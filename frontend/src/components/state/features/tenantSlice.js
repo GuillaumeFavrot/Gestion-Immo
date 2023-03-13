@@ -29,6 +29,7 @@ const api = axios.create({
 export const getTenants = createAsyncThunk(
   'tenants/getTenants',
   async () => {
+    console.log('gitgitgit')
     try {
       const response = await api.get(`/api/tenants`)
       return JSON.stringify(response)
@@ -52,25 +53,6 @@ export const createTenant = createAsyncThunk(
     }
   }
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const tenantSlice = createSlice({
   name: "tenants",
@@ -111,8 +93,46 @@ const tenantSlice = createSlice({
     },
 
     tenants: [],
+
+    loading: false,
+
+    statusText: '',
   },
   reducers: {},
+  extraReducers: {
+
+    //POST Tenant reducer 
+    [createTenant.pending]: (state) => {
+      state.loading = true
+    },
+    [createTenant.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      console.log(res.data)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.tenants = res.data
+    },
+    [createTenant.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //GET Tenants reducer  
+    [getTenants.pending]: (state) => {
+      state.loading = true
+    },
+    [getTenants.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      console.log(res.data)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.tenants = res.data
+    },
+    [getTenants.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+  },
 });
 
 export default tenantSlice.reducer;
