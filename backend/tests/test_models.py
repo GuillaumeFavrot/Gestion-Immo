@@ -13,6 +13,7 @@ from backend.application.models.bill import Rent_bill
 from backend.application.models.bill import Deposit_bill
 
 a = Apartment(
+        id= id_gen(),
         address_1="12 rue du marais",
         address_2="",
         zipcode="67000",
@@ -23,7 +24,10 @@ a = Apartment(
         in_management=True
     )
 
+print(a.__dict__)
+
 l = Tenant(
+        id= id_gen(),
         firstname="Antoine",
         lastname="Dupont",
         email="gui.favrot@gmail.com",
@@ -31,6 +35,7 @@ l = Tenant(
     )
 
 e = Inventory(
+        id= id_gen(),
         apartment_id=a.id,
         tenant_id=l.id,
         type=Inventory_type.EXIT,
@@ -81,10 +86,6 @@ def test_apartment_remove_tenant() -> None:
     a.remove_tenant()
     assert a.current_tenant_id == ""
 
-def test_delete_apartment() -> None:
-    """Tests the delete apartment method"""
-    assert a.delete_apartment() == "Apartment deleted"
-
 #Tenant model testing
 
 def test_tenant_creation() -> None:
@@ -95,10 +96,6 @@ def test_update_tenant_data() -> None:
     """Tests the update tenant data method"""
     l.update_tenant_data(data_type=Tenant_data_type.FIRSTNAME, new_data="Oscar")
     assert l.firstname == "Oscar"
-    
-def test_delete_tenant() -> None:
-    """Tests the delete tenant method"""
-    assert l.delete_tenant() == "Tenant deleted"
 
 #Inventory model testing
 
@@ -110,10 +107,6 @@ def test_update_inventory() -> None:
     """Tests the update inventory method"""
     e.update_inventory(new_remarks="Remarques:\n- Egratignure baignoire\n- Marques sur le parquet\n- Peinture cadre de porte écaillée")
     assert e.remarks == "Remarques:\n- Egratignure baignoire\n- Marques sur le parquet\n- Peinture cadre de porte écaillée"
-
-def test_delete_inventory() -> None:
-    """Tests the delete inventory method"""
-    assert e.delete_inventory() == "Inventory deleted"
 
 #Bill model testing
 

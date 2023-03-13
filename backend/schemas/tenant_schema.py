@@ -1,5 +1,3 @@
-#!/bin/python
-
 from marshmallow import Schema, fields
 
 # Message Schema
@@ -10,7 +8,7 @@ class Tenant_schema(Schema):
     email = fields.Str()
     caf_payment =fields.Bool()
     id = fields.Str()
-    apl_amount = fields.Int()
+    apl_amount = fields.Float()
 
 # Schema initialization
 

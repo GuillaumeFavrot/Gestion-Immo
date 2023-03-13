@@ -14,6 +14,7 @@ from backend.application.main_logic.rent_bill_creator import rent_bill_creator
 from backend.application.main_logic.payment_processor import payment_processor
 
 a = Apartment(
+        id=id_gen(),
         address_1="12 rue du marais",
         address_2="",
         zipcode="67000",
@@ -25,6 +26,7 @@ a = Apartment(
     )
 
 l = Tenant(
+        id=id_gen(),
         firstname="Antoine",
         lastname="Dupont",
         email="gui.favrot@gmail.com",
@@ -32,6 +34,7 @@ l = Tenant(
     )
 
 e = Inventory(
+        id=id_gen(),
         apartment_id=a.id,
         tenant_id=l.id,
         type=Inventory_type.EXIT,

@@ -2,6 +2,8 @@ import React from "react";
 import EntryElement from "./EntryElement";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyPage } from "./../../state/features/viewSlice";
+import { deleteTenant } from "./../../state/features/tenantSlice";
+import { deleteApartment } from "../../state/features/apartmentSlice";
 
 function TableEntry({ headings, entry, consult, deletion, pay }) {
   //Application state
@@ -20,6 +22,16 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
     console.log(request);
     dispatch(modifyPage(request.join("")));
   };
+
+  //Delete entry
+  const deleteEntry = () => {
+    if (page == "Apartments") {
+      dispatch(deleteApartment(entry['id']))
+    }
+    else if (page == "Tenants") {
+      dispatch(deleteTenant(entry['id']))
+    }
+  }
 
   return (
     <tr>
@@ -71,7 +83,7 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
       </td>
 
       <td className={deletion == true ? "" : "d-none"}>
-        <button className="btn-table text-danger">
+        <button className="btn-table text-danger" onClick={() => deleteEntry()}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"

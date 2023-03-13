@@ -57,4 +57,5 @@ class Rent_bill(Bill):
     period: str = ""
 
     def __post_init__(self):
+        print(self.rent_amount, self.charges, self.management_fees)
         self.total_amount = self.rent_amount + self.charges + self.management_fees

@@ -1,4 +1,71 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from 'axios';
+
+//URL and axios setup
+
+let url = ''
+
+  // If no base URL (or an empty string) is given the main app address will be used. In production this is fine because the main Heroku app address serves the Django app.
+  // Since React is also served by Django the correct URL is used.
+  // However in development React runs on its own server so we have to specify the address (the Django server address) where requests have to be sent.
+  // This section is generic and does not have to be modified. 
+if(process.env.NODE_ENV === 'development') {
+  url = 'http://127.0.0.1:5000'
+}
+
+const api = axios.create({
+  baseURL: url,
+  withCredentials: false,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+// Action creators
+// All action creators are rigged to handle basic CRUD operations and throw query errors.
+// Just modify the function and variable names to suit your needs.
+
+export const getApartments = createAsyncThunk(
+  'apartments/getApartments',
+  async () => {
+    try {
+      const response = await api.get(`/api/apartments`)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const createApartment = createAsyncThunk(
+  'apartments/createApartment',
+  async (data) => {
+    console.log(data)
+    try {
+      const response = await api.post(`/api/apartments`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const deleteApartment = createAsyncThunk(
+  'test/deleteApartment',
+  async (id) => {
+    try {
+      const response = await api.delete(`/api/apartments`, {data : {id : id}})
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 
 const apartmentSlice = createSlice({
   name: "apartments",
@@ -10,6 +77,7 @@ const apartmentSlice = createSlice({
       zipcode: "Code postal",
       city: "Ville",
       in_management: "En gestion",
+      management_fees: "Frais de gestion"
     },
     deposit_headings: {
       id: "ID",
@@ -95,34 +163,83 @@ const apartmentSlice = createSlice({
     },
 
     apartments: [
-      {
-        id: "#12",
-        address_1: "22 rue des accacias",
-        address_2: "Cedex 36",
-        zipcode: "68300",
-        city: "Mulhouse",
-        monthly_charges: 50.0,
-        monthly_rent: 800.0,
-        deposit: 850.0,
-        in_management: "True",
-        management_fees: 64.0,
-      },
-      {
-        id: "#36",
-        address_1: "16 rue des champs",
-        address_2: "",
-        zipcode: "67370",
-        city: "Dingsheim",
-        in_management: "True",
-        monthly_charges: 30.0,
-        monthly_rent: 600.0,
-        deposit: 630.0,
-        in_management: "True",
-        management_fees: 48.0,
-      },
+      // {
+      //   id: "#12",
+      //   address_1: "22 rue des accacias",
+      //   address_2: "Cedex 36",
+      //   zipcode: "68300",
+      //   city: "Mulhouse",
+      //   monthly_charges: 50.0,
+      //   monthly_rent: 800.0,
+      //   deposit: 850.0,
+      //   in_management: "True",
+      //   management_fees: 64.0,
+      // },
+      // {
+      //   id: "#36",
+      //   address_1: "16 rue des champs",
+      //   address_2: "",
+      //   zipcode: "67370",
+      //   city: "Dingsheim",
+      //   in_management: "True",
+      //   monthly_charges: 30.0,
+      //   monthly_rent: 600.0,
+      //   deposit: 630.0,
+      //   in_management: "True",
+      //   management_fees: 48.0,
+      // },
     ],
   },
   reducers: {},
+  extraReducers: {
+
+    //POST Apartement reducer 
+    [createApartment.pending]: (state) => {
+      state.loading = true
+    },
+    [createApartment.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      console.log(res.data)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartments = res.data
+    },
+    [createApartment.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //GET Apartements reducer  
+    [getApartments.pending]: (state) => {
+      state.loading = true
+    },
+    [getApartments.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      console.log(res.data)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartments = res.data
+    },
+    [getApartments.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //DELETE reducers
+    [deleteApartment.pending]: (state) => {
+      state.loading = true
+    },
+    [deleteApartment.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `DELETE Request ${res.statusText} with status code ${res.status}`
+      state.apartments = res.data
+    },
+    [deleteApartment.rejected]: (state, { error }) => {
+      state.loading = false
+      state.statusText = `DELETE ${error.message}`
+    }
+  },
 });
 
 export default apartmentSlice.reducer;
