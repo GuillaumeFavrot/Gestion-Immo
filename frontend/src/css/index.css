@@ -25,6 +25,10 @@ h1 {
   font-size: 30px !important;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 .page {
   flex-grow: 1;
   padding: 10px;
@@ -51,4 +55,21 @@ btn-footer {
   height: 20px;
   background: none;
   border: none;
+}
+
+.info-card {
+  width: 80%;
+}
+
+.info-card-title {
+  width: 20%;
+}
+
+.info-table-content {
+  width: 70%;
+  flex-flow: 1;
+}
+
+.info-card-btn {
+  width: 10%;
 }

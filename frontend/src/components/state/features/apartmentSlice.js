@@ -95,6 +95,63 @@ const apartmentSlice = createSlice({
       due_date: "Date d'échéance",
       period: "Période",
     },
+    info_table_headings: [
+      {
+        name: "id",
+        display_name: "ID", 
+        modifiable: false
+      },
+      {
+        name: "address_1",
+        display_name: "Adresse", 
+        modifiable: false
+      },
+      {
+        name: "address_2",
+        display_name: "Complément d'adresse", 
+        modifiable: false
+      },
+      {
+        name: "zipcode",
+        display_name: 'Code postal', 
+        modifiable: false
+      },
+      {
+        name: "city",
+        display_name: 'Ville', 
+        modifiable: false
+      },
+      {
+        name: "in_management",
+        display_name: 'En gestion ?', 
+        modifiable: false
+      },      
+      {
+        name: "monthly_rent",
+        display_name: 'Loyer mensuel', 
+        modifiable: true
+      },
+      {
+        name: "monthly_charges",
+        display_name: 'Charges mensuelles', 
+        modifiable: true
+      },
+      {
+        name: "caution",
+        display_name: 'Caution', 
+        modifiable: true
+      },
+      {
+        name: "current_tenant_id",
+        display_name: 'ID du locataire', 
+        modifiable: false
+      },
+      {
+        name: "current_tenant_entry_date",
+        display_name: "Date d'entrée du locataire", 
+        modifiable: false
+      },
+    ],
 
     apartment: {
       id: "#12",

@@ -93,6 +93,38 @@ const tenantSlice = createSlice({
       due_date: "Date d'échéance",
       period: "Période",
     },
+    info_table_headings: [
+      {
+        name: "id",
+        display_name: "ID", 
+        modifiable: false
+      },
+      {
+        name: "lastname",
+        display_name: "Nom de famille", 
+        modifiable: true
+      },
+      {
+        name: "firstname",
+        display_name: "Prénom", 
+        modifiable: true
+      },
+      {
+        name: "email",
+        display_name: 'E-mail', 
+        modifiable: true
+      },
+      {
+        name: "caf_payment",
+        display_name: 'Prélèvement CAF ?', 
+        modifiable: true
+      },
+      {
+        name: "apl_amount",
+        display_name: 'montant des apl', 
+        modifiable: true
+      }
+    ],
 
     tenant: {
       firstname: "",

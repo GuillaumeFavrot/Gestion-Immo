@@ -24,8 +24,6 @@ a = Apartment(
         in_management=True
     )
 
-print(a.__dict__)
-
 l = Tenant(
         id= id_gen(),
         firstname="Antoine",

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ApartmentForm from "./forms/ApartmentForm";
 import TenantForm from "./forms/TenantForm";
@@ -15,17 +14,17 @@ function Tools() {
   const handleShow = () => setShow(true);
 
   return (
-    <div className={`tools d-flex bg-${theme.secondaryBackground} mb-2 p-2`}>
-      <div class="input-group me-2">
+    <div className={`tools d-flex bg-${theme.secondaryBackground} mb-2 p-2 border rounded-1`}>
+      <div className="input-group me-2">
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           placeholder="Que cherchez-vous?"
           aria-label="Que cherchez-vous?"
           aria-describedby="button-addon2"
         ></input>
         <button
-          class={`btn btn-outline-secondary text-${theme.text}`}
+          className={`btn btn-outline-secondary text-${theme.text}`}
           type="button"
           id="button-addon2"
         >
@@ -38,14 +37,14 @@ function Tools() {
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
             />
           </svg>
         </button>
       </div>
       <button
-        class={`btn btn-outline-secondary text-${theme.text} `}
+        className={`btn btn-outline-secondary text-${theme.text} `}
         type="button"
         onClick={handleShow}
       >

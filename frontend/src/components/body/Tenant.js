@@ -1,17 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import InformationTable from "./informationTable/InformationTable";
 import Table from "./table/Table";
 
 function Tenant() {
   //Application state
   const page = useSelector((state) => state.view.page);
-
   const tenants = useSelector((state) => state.tenants);
 
   return (
     <div className={page === "Tenant" ? "page container-xxl" : "d-none"}>
       <div className="Title">
-        <h3>Fiche locataire</h3>
+        <InformationTable item={tenants.tenant} displayed_info={tenants.info_table_headings}/>
       </div>
       <div>
         <h5>Liste des dépots</h5>

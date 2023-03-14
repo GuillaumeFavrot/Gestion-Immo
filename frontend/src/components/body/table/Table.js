@@ -7,18 +7,18 @@ function Table({ headings, data, consult, deletion, pay }) {
   const theme = useSelector((state) => state.view.theme);
 
   return (
-    <div>
-      <table className={`table table-${theme.secondaryBackground}`}>
+    <div className="border mb-3">
+      <table className={`table table-${theme.secondaryBackground} mb-0`}>
         <thead>
           <tr>
             {Object.entries(headings).map((heading) => (
               <TableHeading key={heading} heading={heading[1]} />
             ))}
-            <th className={consult == true ? "heading" : "d-none"}>
+            <th className={consult === true ? "heading" : "d-none"}>
               Consulter
             </th>
-            <th className={pay == true ? "heading" : "d-none"}>Paiement</th>
-            <th className={deletion == true ? "heading" : "d-none"}>
+            <th className={pay === true ? "heading" : "d-none"}>Paiement</th>
+            <th className={deletion === true ? "heading" : "d-none"}>
               Supprimer
             </th>
           </tr>

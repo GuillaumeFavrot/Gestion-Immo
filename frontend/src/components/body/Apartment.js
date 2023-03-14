@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import InformationTable from "./informationTable/InformationTable";
 import Table from "./table/Table";
 
 function Apartment() {
@@ -7,12 +8,10 @@ function Apartment() {
   const page = useSelector((state) => state.view.page);
   const apartments = useSelector((state) => state.apartments);
 
-  console.log(apartments);
-
   return (
     <div className={page === "Apartment" ? "page container-xxl" : "d-none"}>
       <div className="Title">
-        <h3>Fiche appartement</h3>
+        <InformationTable item={apartments.apartment} displayed_info={apartments.info_table_headings}/>
       </div>
       <div>
         <h5>Liste des dépots</h5>
