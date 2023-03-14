@@ -4,13 +4,21 @@ import { useSelector } from "react-redux";
 function InformationTableEntry({item, info}) {
     const theme = useSelector((state) => state.view.theme);
 
+    let data = item[info[1].name]
+    if (data === true) {
+      data = "oui"
+    }
+    if (data === false) {
+      data = "non"
+    }
+
     return (
         <li className={`list-group-item bg-${theme.secondaryBackground} grid d-flex flex-row`}>
             <div className={`text-${theme.text} info-card-title`}>
                 {info[1].display_name}
             </div>
             <div className={`text-${theme.text} info-table-content bold`}>
-                {item[info[1].name]}
+                {data}
             </div>
             <button
             className={info[1].modifiable === true ? "btn-table info-card-btn d-flex justify-content-end align-items-center" : "d-none"}

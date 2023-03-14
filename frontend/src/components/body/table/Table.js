@@ -3,11 +3,11 @@ import TableHeading from "./TableHeading";
 import TableEntry from "./TableEntry";
 import { useSelector } from "react-redux";
 
-function Table({ headings, data, consult, deletion, pay, select, validation }) {
+function Table({ headings, data, consult, deletion, pay, select, validation, noborder }) {
   const theme = useSelector((state) => state.view.theme);
 
   return (
-    <div className="border mb-3">
+    <div className={noborder === true ? "" : "border mb-3"}>
       <table className={`table table-${theme.secondaryBackground} mb-0`}>
         <thead>
           <tr>

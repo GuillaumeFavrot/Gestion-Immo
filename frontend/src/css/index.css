@@ -73,3 +73,20 @@ btn-footer {
 .info-card-btn {
   width: 10%;
 }
+
+.modal-list {
+  border: 0px !important;
+}
+
+.payment-card-title {
+  width: 80%;
+}
+
+.payment-table-content {
+  width: 20%;
+  flex-flow: 1;
+}
+
+.big {
+  font-size: 1.3rem;
+}

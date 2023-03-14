@@ -120,6 +120,14 @@ const apartmentSlice = createSlice({
       due_date: "Date d'échéance",
       period: "Période",
     },
+    tenant_headings: {
+      id: "ID",
+      lastname: "Nom de famille",
+      firstname: "Prénom",
+      email: "Email",
+      caf_payment: "APL",
+      apl_amount: "Montant des APL"
+    },
     info_table_headings: [
       {
         name: "id",

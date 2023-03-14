@@ -40,6 +40,16 @@ function Tenant() {
           Générer une quittance de loyer
         </button>
       </div>
+
+      <div>
+        <h5>Liste des appartements</h5>
+        <Table
+          headings={tenants.apartment_headings}
+          data={tenants.tenant.apartments}
+          consult={true}
+        />
+      </div>
+
       <div>
         <h5>Liste des dépots</h5>
         <Table
@@ -56,11 +66,6 @@ function Tenant() {
           pay={true}
         />
       </div>
-      <div>
-        Outils
-        <button>Ajouter une facture</button>
-        <button>Générer une quittance de loyer</button>
-      </div>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header
@@ -72,7 +77,7 @@ function Tenant() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}>
-          <Rent_bill_form validation={handleShow}/>
+          <Rent_bill_form validation={handleClose}/>
         </Modal.Body>
       </Modal>
 

@@ -9,10 +9,11 @@ from backend.application.models.bill import Deposit_bill, Rent_bill
 
 from backend.application.main_logic.tenant_assignment import tenant_assignment
 from backend.application.main_logic.rent_bill_creator import rent_bill_creator
+from backend.application.main_logic.payment_processor import payment_processor
 
 from backend.schemas.tenant_schema import tenants_schema, tenant_schema, extended_tenant_schema
 from backend.schemas.apartment_schema import apartments_schema, apartment_schema
-from backend.schemas.bill_schema import deposit_bills_schema, rent_bills_schema
+from backend.schemas.bill_schema import deposit_bills_schema, rent_bills_schema, rent_bill_schema, deposit_bill_schema
 
 import backend.config as config
 
@@ -84,7 +85,6 @@ def delete_tenant():
 @routes.route("/api/tenant/bill", methods=['POST'])
 def create_rent_bill():
     data = request.json
-    print(data)
     tenant = Tenant.query.get(data['tenant_id'])
     apartment = Apartment.query.get(data['apartment_id'])
     former_rents = pd.DataFrame(rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant_id']).all()))
@@ -95,6 +95,26 @@ def create_rent_bill():
     tenant.apartments = apartments_schema.dump(Apartment.query.filter(Apartment.current_tenant_id == data['tenant_id']).all())
     tenant.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.tenant_id == data['tenant_id']).all())
     tenant.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant_id']).all())
+    return extended_tenant_schema.dump(tenant)
+
+#Create a new rent bill
+@routes.route("/api/tenant/bill", methods=['PUT'])
+def pay_bill():
+    data = request.json
+    print(data)
+    tenant = Tenant.query.get(data['tenant'])
+    bill = ""
+    if data['type'] == "deposit":
+        bill = Deposit_bill.query.get(data['bill'])
+    else :
+        bill = Rent_bill.query.get(data['bill'])
+    print(type(bill))
+    payment_processor(tenant=tenant, bill=bill, paid_amount=float(data['paid_amount']))
+    db.session.commit()
+    tenant = Tenant.query.get(data['tenant'])
+    tenant.apartments = apartments_schema.dump(Apartment.query.filter(Apartment.current_tenant_id == data['tenant']).all())
+    tenant.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.tenant_id == data['tenant']).all())
+    tenant.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant']).all())
     return extended_tenant_schema.dump(tenant)
 
 

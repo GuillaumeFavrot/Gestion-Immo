@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import EntryElement from "./EntryElement";
+import Modal from "react-bootstrap/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyPage } from "./../../state/features/viewSlice";
 import { deleteTenant, getTenant } from "./../../state/features/tenantSlice";
 import { assignTenant, deleteApartment, getApartment } from "../../state/features/apartmentSlice";
+import Bill_payment_form from "../forms/Bill_payment_form";
 
 function TableEntry({ headings, entry, consult, deletion, pay, select, validation }) {
   //Application state
@@ -11,23 +13,23 @@ function TableEntry({ headings, entry, consult, deletion, pay, select, validatio
   const page = useSelector((state) => state.view.page);
   const apartment = useSelector((state) => state.apartments.apartment)
 
+  //local state
+  const [show, setShow] = useState(false);
+
   //Dispatch setup
   const dispatch = useDispatch();
 
   //Page request
   const pageRequest = (e) => {
-    e.preventDefault();
-    let request = [...page];
-    request.pop();
-    request.join("");
-    if (page === "Apartments") {
-      dispatch(getApartment(entry['id']))
-    }
-    else if (page === "Tenants") {
-      dispatch(getTenant(entry['id']))
-    }
-    dispatch(modifyPage(request.join("")));
-  };
+      e.preventDefault();
+      if (entry["address_1"])  {
+        dispatch(getApartment(entry['id']))
+        dispatch(modifyPage('Apartment'));
+      } else {
+        dispatch(getTenant(entry['id']))
+        dispatch(modifyPage('Tenant'));
+      }
+  }
 
   //Delete entry
   const deleteEntry = () => {
@@ -41,12 +43,25 @@ function TableEntry({ headings, entry, consult, deletion, pay, select, validatio
 
   //Tenant selection
   const tenantSelection = () => {
-    let request = {
-      apartment_id : apartment['id'],
-      tenant_id : entry['id']
+    if(apartment.current_tenant_id === "") {
+      let request = {
+        apartment_id : apartment['id'],
+        tenant_id : entry['id']
+      }
+      dispatch(assignTenant(request))
+      validation()      
+    } else {
+      alert("Un locataire occupe déjà cet appartement!")
     }
-    dispatch(assignTenant(request))
-    validation()
+  }
+
+  //Payment handlers
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const paymentRequest = () => {
+    dispatch(getTenant(entry['id']))
+    handleShow()
   }
 
   return (
@@ -101,7 +116,7 @@ function TableEntry({ headings, entry, consult, deletion, pay, select, validatio
           className={
             entry.paid === true ? "d-none" : `btn-table text-${theme.text}`
           }
-          onClick={(e) => pageRequest(e)}
+          onClick={() => paymentRequest()}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -134,6 +149,21 @@ function TableEntry({ headings, entry, consult, deletion, pay, select, validatio
           </svg>
         </button>
       </td>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header
+          className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}
+          closeButton
+        >
+          <Modal.Title className="text-center">
+            Payer une facture
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}>
+          <Bill_payment_form validation={handleClose} bill={entry}/>
+        </Modal.Body>
+      </Modal>
+
     </tr>
   );
 }

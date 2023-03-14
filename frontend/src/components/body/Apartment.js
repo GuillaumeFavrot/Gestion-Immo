@@ -48,6 +48,14 @@ function Apartment() {
           Ajouter un état des lieux</button>
       </div>
       <div>
+        <h5>Locataire actuel</h5>
+        <Table
+          headings={apartments.tenant_headings}
+          data={[apartments.apartment.tenant]}
+          consult={true}
+        />
+      </div>
+      <div>
         <h5>Liste des dépots</h5>
         <Table
           headings={apartments.deposit_headings}
@@ -70,9 +78,10 @@ function Apartment() {
           closeButton
         >
           <Modal.Title className="text-center">
+            Sélectionnez un locataire
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}>
           <Table         
             headings={tenants.short_headings}
             data={tenants.tenants}
@@ -81,6 +90,7 @@ function Apartment() {
             deletion={false}
             pay={false}
             validation={handleClose}
+            noborder={true}
             />
         </Modal.Body>
       </Modal>

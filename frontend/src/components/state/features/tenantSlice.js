@@ -91,6 +91,19 @@ export const createRentBill = createAsyncThunk(
   }
 )
 
+export const payBill = createAsyncThunk(
+  'tenant/payBill',
+  async (request) => {
+    try {
+      const response = await api.put(`/api/tenant/bill`, request)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 const tenantSlice = createSlice({
   name: "tenants",
   initialState: {
@@ -122,6 +135,15 @@ const tenantSlice = createSlice({
       issue_date: "Date d'émission",
       due_date: "Date d'échéance",
       period: "Période",
+    },
+    apartment_headings: {
+      id: "ID",
+      address_1: "Adresse",
+      address_2: "Complément d'adresse",
+      zipcode: "Code postal",
+      city: "Ville",
+      in_management: "En gestion",
+      management_fees: "Frais de gestion"
     },
     info_table_headings: [
       {
@@ -248,6 +270,21 @@ const tenantSlice = createSlice({
       state.tenant = res.data
     },
     [createRentBill.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //POST new rent bill
+    [payBill.pending]: (state) => {
+      state.loading = true
+    },
+    [payBill.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.tenant = res.data
+    },
+    [payBill.rejected]: (state, { error } ) => {
       state.loading = false
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },
