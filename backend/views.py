@@ -1,4 +1,5 @@
 from datetime import datetime
+import pandas as pd
 
 from flask import Blueprint, send_from_directory, request
 from backend.exts import db
@@ -7,6 +8,7 @@ from backend.application.models.apartment import Apartment
 from backend.application.models.bill import Deposit_bill, Rent_bill
 
 from backend.application.main_logic.tenant_assignment import tenant_assignment
+from backend.application.main_logic.rent_bill_creator import rent_bill_creator
 
 from backend.schemas.tenant_schema import tenants_schema, tenant_schema, extended_tenant_schema
 from backend.schemas.apartment_schema import apartments_schema, apartment_schema
@@ -77,6 +79,23 @@ def delete_tenant():
     tenants = Tenant.query.all()
     return tenants_schema.dump(tenants)
 
+## @/api/tenant/bill
+#Create a new rent bill
+@routes.route("/api/tenant/bill", methods=['POST'])
+def create_rent_bill():
+    data = request.json
+    print(data)
+    tenant = Tenant.query.get(data['tenant_id'])
+    apartment = Apartment.query.get(data['apartment_id'])
+    former_rents = pd.DataFrame(rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant_id']).all()))
+    rent_bill = rent_bill_creator(tenant=tenant, apartment=apartment, period=data['period'], former_rents=former_rents)
+    db.session.add(rent_bill)
+    db.session.commit()
+    tenant = Tenant.query.get(data['tenant_id'])
+    tenant.apartments = apartments_schema.dump(Apartment.query.filter(Apartment.current_tenant_id == data['tenant_id']).all())
+    tenant.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.tenant_id == data['tenant_id']).all())
+    tenant.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant_id']).all())
+    return extended_tenant_schema.dump(tenant)
 
 
 

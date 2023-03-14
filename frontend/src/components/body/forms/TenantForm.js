@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createTenant } from "../../state/features/tenantSlice";
 
-function TenantForm() {
+function TenantForm({validation}) {
   //Application state
   const theme = useSelector((state) => state.view.theme);
 
@@ -27,7 +27,7 @@ function TenantForm() {
     caf_payment: setCaf_payment,
     apl_amount: setApl_amount,
   };
-
+  
   const onChange = (e) => {
     if (e.target.id === "apl_amount") {
       setters[e.target.id](parseFloat(e.target.value));
@@ -51,6 +51,7 @@ function TenantForm() {
       apl_amount: apl_amount,
     };
     dispatch(createTenant(data))
+    validation()
   };
 
   return (

@@ -53,7 +53,7 @@ export const createTenant = createAsyncThunk(
 )
 
 export const getTenant = createAsyncThunk(
-  'tenants/getTenant',
+  'tenant/getTenant',
   async (id) => {
     try {
       const response = await api.post(`/api/tenant`, id)
@@ -66,10 +66,23 @@ export const getTenant = createAsyncThunk(
 )
 
 export const deleteTenant = createAsyncThunk(
-  'test/deleteTenant',
+  'tenant/deleteTenant',
   async (id) => {
     try {
       const response = await api.delete(`/api/tenant`, {data : {id : id}})
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const createRentBill = createAsyncThunk(
+  'tenant/createRentBill',
+  async (request) => {
+    try {
+      const response = await api.post(`/api/tenant/bill`, request)
       return JSON.stringify(response)
     }
     catch (e) {
@@ -200,7 +213,6 @@ const tenantSlice = createSlice({
     },
     [getTenant.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
-      console.log(res.data)
       state.loading = false
       state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
       state.tenant = res.data
@@ -223,7 +235,22 @@ const tenantSlice = createSlice({
     [deleteTenant.rejected]: (state, { error }) => {
       state.loading = false
       state.statusText = `DELETE ${error.message}`
-    }
+    },
+
+    //POST new rent bill
+    [createRentBill.pending]: (state) => {
+      state.loading = true
+    },
+    [createRentBill.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.tenant = res.data
+    },
+    [createRentBill.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
   },
 });
 

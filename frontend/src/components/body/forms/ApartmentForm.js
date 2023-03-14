@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createApartment } from "../../state/features/apartmentSlice";
 
-function ApartmentForm() {
+function ApartmentForm({validation}) {
   //Application state
   const theme = useSelector((state) => state.view.theme);
 
@@ -63,8 +63,8 @@ function ApartmentForm() {
       deposit: deposit,
       in_management: in_management,
     };
-    console.log(data)
     dispatch(createApartment(data))
+    validation()
   };
 
   return (

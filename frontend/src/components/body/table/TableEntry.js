@@ -5,7 +5,7 @@ import { modifyPage } from "./../../state/features/viewSlice";
 import { deleteTenant, getTenant } from "./../../state/features/tenantSlice";
 import { assignTenant, deleteApartment, getApartment } from "../../state/features/apartmentSlice";
 
-function TableEntry({ headings, entry, consult, deletion, pay, select }) {
+function TableEntry({ headings, entry, consult, deletion, pay, select, validation }) {
   //Application state
   const theme = useSelector((state) => state.view.theme);
   const page = useSelector((state) => state.view.page);
@@ -46,6 +46,7 @@ function TableEntry({ headings, entry, consult, deletion, pay, select }) {
       tenant_id : entry['id']
     }
     dispatch(assignTenant(request))
+    validation()
   }
 
   return (

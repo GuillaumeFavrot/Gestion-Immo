@@ -29,6 +29,24 @@ function Apartment() {
       <div className="Title">
         <InformationTable item={apartments.apartment} displayed_info={apartments.info_table_headings}/>
       </div>
+      <h5>Actions</h5>
+      <div className={`tools d-flex bg-${theme.secondaryBackground} mb-2 p-2 border rounded-1`}>
+        <button 
+          className={`btn btn-outline-secondary text-${theme.text} me-2`}
+          type="button"onClick={() => assignTenant()}
+          >
+            Assigner un locataire à cet appartement
+        </button>
+        <button
+          className={`btn btn-outline-secondary text-${theme.text} me-2`}
+        >
+          Départ du locataire
+        </button>
+        <button
+          className={`btn btn-outline-secondary text-${theme.text}`}
+        >
+          Ajouter un état des lieux</button>
+      </div>
       <div>
         <h5>Liste des dépots</h5>
         <Table
@@ -44,12 +62,6 @@ function Apartment() {
           data={apartments.apartment.rent_bills}
           pay={true}
         />
-      </div>
-      <div>
-        Outils
-        <button onClick={() => assignTenant()}>Assigner un locataire à cet appartement</button>
-        <button>Départ du locataire</button>
-        <button>Ajouter un état des lieux</button>
       </div>
 
       <Modal show={show} onHide={handleClose}>
@@ -68,6 +80,7 @@ function Apartment() {
             consult={false}
             deletion={false}
             pay={false}
+            validation={handleClose}
             />
         </Modal.Body>
       </Modal>

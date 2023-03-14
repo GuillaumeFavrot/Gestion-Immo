@@ -66,10 +66,10 @@ function Tools() {
           className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}
         >
           <div className={page === "Apartments" ? "d-block" : "d-none"}>
-            <ApartmentForm />
+            <ApartmentForm validation={handleClose}/>
           </div>
           <div className={page === "Tenants" ? "d-block" : "d-none"}>
-            <TenantForm />
+            <TenantForm validation={handleClose}/>
           </div>
         </Modal.Body>
       </Modal>
