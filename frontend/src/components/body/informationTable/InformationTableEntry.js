@@ -4,8 +4,6 @@ import { useSelector } from "react-redux";
 function InformationTableEntry({item, info}) {
     const theme = useSelector((state) => state.view.theme);
 
-    console.log(item)
-
     return (
         <li className={`list-group-item bg-${theme.secondaryBackground} grid d-flex flex-row`}>
             <div className={`text-${theme.text} info-card-title`}>

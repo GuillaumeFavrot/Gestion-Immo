@@ -5,8 +5,8 @@ from backend.exts import db
 from backend.application.models.tenant import Tenant
 from backend.application.models.apartment import Apartment
 
-from backend.schemas.tenant_schema import tenants_schema
-from backend.schemas.apartment_schema import apartments_schema
+from backend.schemas.tenant_schema import tenants_schema, tenant_schema
+from backend.schemas.apartment_schema import apartments_schema, apartment_schema
 import backend.config as config
 
 from backend.application.utilities.id_generator import id_gen
@@ -57,8 +57,26 @@ def create_tenant():
 
     return tenants_schema.dump(tenants)
 
+## @/api/tenant
+
+# Get a tenant
+@routes.route("/api/tenant", methods=['POST'])
+def get_tenant():
+    print('hello from tenant')
+    
+    id = request.json
+    print(id)
+    tenant = Tenant.query.get(id)
+    apartments = Apartment.query.where(Apartment.current_tenant_id == id)
+
+    tenant.apartments = apartments
+    tenant.deposit_bills = []
+    tenant.rent_bills= []
+
+    return tenant_schema.dump(tenant)
+
 # Delete a tenant
-@routes.route("/api/tenants", methods=['DELETE'])
+@routes.route("/api/tenant", methods=['DELETE'])
 def delete_tenant():
 
     id = request.json['id']
@@ -105,8 +123,20 @@ def create_apartment():
 
     return apartments_schema.dump(apartments)
 
+## @/api/apartment
+
+# Get an apartment
+@routes.route("/api/apartment", methods=['GET'])
+def get_apartment():
+    print('hello from apartment')
+    id = request.json
+    print(id)
+    apartment = Tenant.query.get(id)
+
+    return apartment_schema.dump(apartment)
+
 # Delete an apartment
-@routes.route("/api/apartments", methods=['DELETE'])
+@routes.route("/api/apartment", methods=['DELETE'])
 def delete_apartment():
 
     id = request.json['id']

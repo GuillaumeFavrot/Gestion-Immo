@@ -29,7 +29,6 @@ const api = axios.create({
 export const getTenants = createAsyncThunk(
   'tenants/getTenants',
   async () => {
-    console.log('gitgitgit')
     try {
       const response = await api.get(`/api/tenants`)
       return JSON.stringify(response)
@@ -53,11 +52,25 @@ export const createTenant = createAsyncThunk(
   }
 )
 
+export const getTenant = createAsyncThunk(
+  'tenants/getTenant',
+  async (id) => {
+    try {
+      console.log(id)
+      const response = await api.post(`/api/tenant`, id)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 export const deleteTenant = createAsyncThunk(
   'test/deleteTenant',
   async (id) => {
     try {
-      const response = await api.delete(`/api/tenants`, {data : {id : id}})
+      const response = await api.delete(`/api/tenant`, {data : {id : id}})
       return JSON.stringify(response)
     }
     catch (e) {
@@ -121,7 +134,7 @@ const tenantSlice = createSlice({
       },
       {
         name: "apl_amount",
-        display_name: 'montant des apl', 
+        display_name: 'montant des APL', 
         modifiable: true
       }
     ],
@@ -152,7 +165,6 @@ const tenantSlice = createSlice({
     },
     [createTenant.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
-      console.log(res.data)
       state.loading = false
       state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
       state.tenants = res.data
@@ -174,6 +186,22 @@ const tenantSlice = createSlice({
       state.tenants = res.data
     },
     [getTenants.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //GET Tenant reducer  
+    [getTenant.pending]: (state) => {
+      state.loading = true
+    },
+    [getTenant.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      console.log(res.data)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.tenant = res.data
+    },
+    [getTenant.rejected]: (state, { error } ) => {
       state.loading = false
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },

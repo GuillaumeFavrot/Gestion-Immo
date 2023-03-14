@@ -2,8 +2,8 @@ import React from "react";
 import EntryElement from "./EntryElement";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyPage } from "./../../state/features/viewSlice";
-import { deleteTenant } from "./../../state/features/tenantSlice";
-import { deleteApartment } from "../../state/features/apartmentSlice";
+import { deleteTenant, getTenant } from "./../../state/features/tenantSlice";
+import { deleteApartment, getApartment } from "../../state/features/apartmentSlice";
 
 function TableEntry({ headings, entry, consult, deletion, pay }) {
   //Application state
@@ -20,6 +20,13 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
     request.pop();
     request.join("");
     console.log(request);
+    console.log(entry['id']);
+    if (page === "Apartments") {
+      dispatch(getApartment(entry['id']))
+    }
+    else if (page === "Tenants") {
+      dispatch(getTenant(entry['id']))
+    }
     dispatch(modifyPage(request.join("")));
   };
 

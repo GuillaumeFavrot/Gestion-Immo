@@ -53,11 +53,24 @@ export const createApartment = createAsyncThunk(
   }
 )
 
+export const getApartment = createAsyncThunk(
+  'apartments/getApartment',
+  async (id) => {
+    try {
+      const response = await api.get(`/api/apartment`, id)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 export const deleteApartment = createAsyncThunk(
   'test/deleteApartment',
   async (id) => {
     try {
-      const response = await api.delete(`/api/apartments`, {data : {id : id}})
+      const response = await api.delete(`/api/apartment`, {data : {id : id}})
       return JSON.stringify(response)
     }
     catch (e) {
@@ -137,7 +150,7 @@ const apartmentSlice = createSlice({
         modifiable: true
       },
       {
-        name: "caution",
+        name: "deposit",
         display_name: 'Caution', 
         modifiable: true
       },
@@ -154,98 +167,23 @@ const apartmentSlice = createSlice({
     ],
 
     apartment: {
-      id: "#12",
-      address_1: "22 rue des accacias",
-      address_2: "Cedex 36",
-      zipcode: "68300",
-      city: "Mulhouse",
-      in_management: "True",
-      monthly_charges: 50.0,
-      monthly_rent: 800.0,
-      deposit: 850.0,
-      in_management: "True",
-      management_fees: 64.0,
-      tenant: {
-        firstname: "Jean",
-        lastname: "Valjean",
-        email: "jean.valjean@gmail.com",
-        caf_payment: "True",
-        id: "#856",
-      },
-      deposit_bill: [
-        {
-          id: "#12333",
-          apartment_id: "#12",
-          tenant_id: "#856",
-          total_amount: 850.0,
-          paid_amount: 850.0,
-          paid: true,
-          issue_date: Date.now().toLocaleString("fr"),
-          due_date: Date.now().toLocaleString("fr"),
-          deposit_amount: 850.0,
-          status: "active",
-          refunded: false,
-        },
-      ],
-      rent_bills: [
-        {
-          id: "#12333",
-          apartment_id: "#12",
-          tenant_id: "#856",
-          total_amount: 850.0,
-          paid_amount: 850.0,
-          paid: true,
-          issue_date: Date.now().toLocaleString("fr"),
-          due_date: Date.now().toLocaleString("fr"),
-          rent_amount: 800.0,
-          charges: 50.0,
-          management_fees: 64,
-          period: "january_2023",
-        },
-        {
-          id: "#12333",
-          apartment_id: "#12",
-          tenant_id: "#856",
-          total_amount: 850.0,
-          paid_amount: 0.0,
-          paid: false,
-          issue_date: Date.now().toLocaleString("fr"),
-          due_date: Date.now().toLocaleString("fr"),
-          rent_amount: 800.0,
-          charges: 50.0,
-          management_fees: 64,
-          period: "february_2023",
-        },
-      ],
+      id: "",
+      address_1: "",
+      address_2: "",
+      zipcode: "",
+      city: "",
+      in_management: "",
+      monthly_charges: 0,
+      monthly_rent: 0,
+      deposit: 0,
+      in_management: "",
+      management_fees: 0,
+      tenant: {},
+      deposit_bill: [],
+      rent_bills: [],
     },
 
-    apartments: [
-      // {
-      //   id: "#12",
-      //   address_1: "22 rue des accacias",
-      //   address_2: "Cedex 36",
-      //   zipcode: "68300",
-      //   city: "Mulhouse",
-      //   monthly_charges: 50.0,
-      //   monthly_rent: 800.0,
-      //   deposit: 850.0,
-      //   in_management: "True",
-      //   management_fees: 64.0,
-      // },
-      // {
-      //   id: "#36",
-      //   address_1: "16 rue des champs",
-      //   address_2: "",
-      //   zipcode: "67370",
-      //   city: "Dingsheim",
-      //   in_management: "True",
-      //   monthly_charges: 30.0,
-      //   monthly_rent: 600.0,
-      //   deposit: 630.0,
-      //   in_management: "True",
-      //   management_fees: 48.0,
-      // },
-    ],
+    apartments: [],
   },
   reducers: {},
   extraReducers: {
@@ -278,6 +216,22 @@ const apartmentSlice = createSlice({
       state.apartments = res.data
     },
     [getApartments.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //GET Apartement reducer  
+    [getApartment.pending]: (state) => {
+      state.loading = true
+    },
+    [getApartment.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      console.log(res.data)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [getApartment.rejected]: (state, { error } ) => {
       state.loading = false
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },
