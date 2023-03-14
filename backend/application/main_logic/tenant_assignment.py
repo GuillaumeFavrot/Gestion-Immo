@@ -19,5 +19,4 @@ def tenant_assignment(apartment: Apartment, tenant: Tenant, entry_date: date):
             tenant_id=tenant.id,
             deposit_amount=apartment.deposit
         )
-
     return deposit_bill

@@ -29,9 +29,9 @@ class Apartment_schema(Schema):
     id = fields.Str()
     current_tenant_id = fields.Str()
     current_tenant_entry_date = fields.Str()
-    tenant = fields.Dict(),
-    deposit_bill = fields.List(fields.Dict()),
-    rent_bills = fields.List(fields.Dict()),
+    tenant = fields.Dict()
+    deposit_bills = fields.List(fields.Dict())
+    rent_bills = fields.List(fields.Dict())
 
 # Schema initialization
 

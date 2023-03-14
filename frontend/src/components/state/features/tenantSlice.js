@@ -90,6 +90,11 @@ const tenantSlice = createSlice({
       caf_payment: "APL",
       apl_amount: "Montant des APL"
     },
+    short_headings: {
+      id: "ID",
+      lastname: "Nom de famille",
+      firstname: "Prénom",
+    },
     deposit_headings: {
       id: "ID",
       apartment_id: "ID Logement",

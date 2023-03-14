@@ -57,7 +57,7 @@ export const getApartment = createAsyncThunk(
   'apartments/getApartment',
   async (id) => {
     try {
-      const response = await api.get(`/api/apartment`, id)
+      const response = await api.post(`/api/apartment`, id)
       return JSON.stringify(response)
     }
     catch (e) {
@@ -71,6 +71,19 @@ export const deleteApartment = createAsyncThunk(
   async (id) => {
     try {
       const response = await api.delete(`/api/apartment`, {data : {id : id}})
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const assignTenant = createAsyncThunk(
+  'apartments/assignTenant',
+  async (data) => {
+    try {
+      const response = await api.put(`/api/apartment`, data)
       return JSON.stringify(response)
     }
     catch (e) {
@@ -179,7 +192,7 @@ const apartmentSlice = createSlice({
       in_management: "",
       management_fees: 0,
       tenant: {},
-      deposit_bill: [],
+      deposit_bills: [],
       rent_bills: [],
     },
 
@@ -194,7 +207,6 @@ const apartmentSlice = createSlice({
     },
     [createApartment.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
-      console.log(res.data)
       state.loading = false
       state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
       state.apartments = res.data
@@ -210,7 +222,6 @@ const apartmentSlice = createSlice({
     },
     [getApartments.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
-      console.log(res.data)
       state.loading = false
       state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
       state.apartments = res.data
@@ -226,7 +237,6 @@ const apartmentSlice = createSlice({
     },
     [getApartment.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
-      console.log(res.data)
       state.loading = false
       state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
       state.apartment = res.data

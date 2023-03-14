@@ -3,12 +3,13 @@ import EntryElement from "./EntryElement";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyPage } from "./../../state/features/viewSlice";
 import { deleteTenant, getTenant } from "./../../state/features/tenantSlice";
-import { deleteApartment, getApartment } from "../../state/features/apartmentSlice";
+import { assignTenant, deleteApartment, getApartment } from "../../state/features/apartmentSlice";
 
-function TableEntry({ headings, entry, consult, deletion, pay }) {
+function TableEntry({ headings, entry, consult, deletion, pay, select }) {
   //Application state
   const theme = useSelector((state) => state.view.theme);
   const page = useSelector((state) => state.view.page);
+  const apartment = useSelector((state) => state.apartments.apartment)
 
   //Dispatch setup
   const dispatch = useDispatch();
@@ -19,8 +20,6 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
     let request = [...page];
     request.pop();
     request.join("");
-    console.log(request);
-    console.log(entry['id']);
     if (page === "Apartments") {
       dispatch(getApartment(entry['id']))
     }
@@ -40,6 +39,15 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
     }
   }
 
+  //Tenant selection
+  const tenantSelection = () => {
+    let request = {
+      apartment_id : apartment['id'],
+      tenant_id : entry['id']
+    }
+    dispatch(assignTenant(request))
+  }
+
   return (
     <tr>
       {Object.entries(headings).map((heading) => (
@@ -49,6 +57,27 @@ function TableEntry({ headings, entry, consult, deletion, pay }) {
         <button
           className={`btn-table text-${theme.text}`}
           onClick={(e) => pageRequest(e)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-arrow-right-circle btn-icon"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fillRule="evenodd"
+              d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"
+            />
+          </svg>
+        </button>
+      </td>
+
+      <td className={select === true ? "" : "d-none"}>
+        <button
+          className={`btn-table text-${theme.text}`}
+          onClick={(e) => tenantSelection(e)}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

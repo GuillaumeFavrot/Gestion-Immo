@@ -3,7 +3,7 @@ import TableHeading from "./TableHeading";
 import TableEntry from "./TableEntry";
 import { useSelector } from "react-redux";
 
-function Table({ headings, data, consult, deletion, pay }) {
+function Table({ headings, data, consult, deletion, pay, select }) {
   const theme = useSelector((state) => state.view.theme);
 
   return (
@@ -16,6 +16,9 @@ function Table({ headings, data, consult, deletion, pay }) {
             ))}
             <th className={consult === true ? "heading" : "d-none"}>
               Consulter
+            </th>
+            <th className={select === true ? "heading" : "d-none"}>
+              Sélectionner
             </th>
             <th className={pay === true ? "heading" : "d-none"}>Paiement</th>
             <th className={deletion === true ? "heading" : "d-none"}>
@@ -32,6 +35,7 @@ function Table({ headings, data, consult, deletion, pay }) {
               consult={consult}
               deletion={deletion}
               pay={pay}
+              select={select}
             />
           ))}
         </tbody>

@@ -1,12 +1,17 @@
-#!/bin/python
+from datetime import datetime
 
 from flask import Blueprint, send_from_directory, request
 from backend.exts import db
 from backend.application.models.tenant import Tenant
 from backend.application.models.apartment import Apartment
+from backend.application.models.bill import Deposit_bill
+
+from backend.application.main_logic.tenant_assignment import tenant_assignment
 
 from backend.schemas.tenant_schema import tenants_schema, tenant_schema
 from backend.schemas.apartment_schema import apartments_schema, apartment_schema
+from backend.schemas.bill_schema import deposit_bills_schema
+
 import backend.config as config
 
 from backend.application.utilities.id_generator import id_gen
@@ -62,14 +67,12 @@ def create_tenant():
 # Get a tenant
 @routes.route("/api/tenant", methods=['POST'])
 def get_tenant():
-    print('hello from tenant')
-    
-    id = request.json
-    print(id)
-    tenant = Tenant.query.get(id)
-    apartments = Apartment.query.where(Apartment.current_tenant_id == id)
 
-    tenant.apartments = apartments
+    id = request.json
+
+    tenant = Tenant.query.get(id)
+
+    tenant.apartments = []
     tenant.deposit_bills = []
     tenant.rent_bills= []
 
@@ -126,12 +129,22 @@ def create_apartment():
 ## @/api/apartment
 
 # Get an apartment
-@routes.route("/api/apartment", methods=['GET'])
+@routes.route("/api/apartment", methods=['POST'])
 def get_apartment():
-    print('hello from apartment')
+
     id = request.json
-    print(id)
-    apartment = Tenant.query.get(id)
+
+    apartment = Apartment.query.get(id)
+    bills = Deposit_bill.query.all()
+    print(bills)
+    print(bills[0].__dict__)
+
+    b = deposit_bills_schema.dump(bills)
+
+    print(b)
+    apartment.tenant = {}
+    apartment.deposit_bills = b
+    apartment.rent_bills = []
 
     return apartment_schema.dump(apartment)
 
@@ -149,6 +162,27 @@ def delete_apartment():
     apartments = Tenant.query.all()
 
     return tenants_schema.dump(apartments)
+
+# Assign a tenant to an apartment
+@routes.route("/api/apartment", methods=['PUT'])
+def assign_tenant():
+
+    data = request.json
+
+    apartment = Apartment.query.get(data['apartment_id'])
+
+    tenant = Tenant.query.get(data['tenant_id'])
+
+    depostit_bill = tenant_assignment(apartment=apartment, tenant=tenant, entry_date=datetime.now())
+
+    db.session.add(depostit_bill)
+
+    db.session.commit()
+
+
+
+
+    return apartment_schema.dump(apartment)
 
 #Get all messages
 
