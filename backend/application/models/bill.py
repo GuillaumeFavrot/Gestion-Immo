@@ -6,7 +6,7 @@ from backend.application.models.enums.enums import Deposit_status
 
 from backend.application.main_logic.payment import Payment
 
-class Bill(db.Model):
+class Bill():
     """Bill base class"""
     __tablename__ = "Bill"
     id = db.Column(db.String(255), primary_key=True)
@@ -43,7 +43,7 @@ class Bill(db.Model):
         if self.paid_amount == self.total_amount:
             self.paid = True
 
-class Deposit_bill(Bill):
+class Deposit_bill(Bill, db.Model):
     """
     Deposit bill data structure
     
@@ -81,7 +81,7 @@ class Deposit_bill(Bill):
         self.refunded = refunded
         
 
-class Rent_bill(Bill):
+class Rent_bill(Bill, db.Model):
     """
     Rent bill data structure
 

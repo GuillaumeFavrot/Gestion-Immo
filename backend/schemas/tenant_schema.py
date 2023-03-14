@@ -2,7 +2,7 @@ from marshmallow import Schema, fields
 
 # Message Schema
 
-class Tenants_schema(Schema):
+class Tenant_schema(Schema):
     firstname = fields.Str()
     lastname = fields.Str()
     email = fields.Str()
@@ -10,7 +10,7 @@ class Tenants_schema(Schema):
     id = fields.Str()
     apl_amount = fields.Float()
 
-class Tenant_schema(Schema):
+class Extended_tenant_schema(Schema):
     firstname = fields.Str()
     lastname = fields.Str()
     email = fields.Str()
@@ -24,4 +24,5 @@ class Tenant_schema(Schema):
 # Schema initialization
 
 tenant_schema = Tenant_schema()
-tenants_schema = Tenants_schema(many = True) 
+tenants_schema = Tenant_schema(many = True)
+extended_tenant_schema = Extended_tenant_schema()

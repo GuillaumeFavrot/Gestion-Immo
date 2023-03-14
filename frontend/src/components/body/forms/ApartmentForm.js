@@ -63,6 +63,7 @@ function ApartmentForm() {
       deposit: deposit,
       in_management: in_management,
     };
+    console.log(data)
     dispatch(createApartment(data))
   };
 

@@ -56,7 +56,6 @@ export const getTenant = createAsyncThunk(
   'tenants/getTenant',
   async (id) => {
     try {
-      console.log(id)
       const response = await api.post(`/api/tenant`, id)
       return JSON.stringify(response)
     }

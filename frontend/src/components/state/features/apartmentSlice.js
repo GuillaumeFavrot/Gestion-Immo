@@ -42,7 +42,6 @@ export const getApartments = createAsyncThunk(
 export const createApartment = createAsyncThunk(
   'apartments/createApartment',
   async (data) => {
-    console.log(data)
     try {
       const response = await api.post(`/api/apartments`, data)
       return JSON.stringify(response)
@@ -259,7 +258,22 @@ const apartmentSlice = createSlice({
     [deleteApartment.rejected]: (state, { error }) => {
       state.loading = false
       state.statusText = `DELETE ${error.message}`
-    }
+    },
+
+    //PUT Assign tenant reducer reducer 
+    [assignTenant.pending]: (state) => {
+      state.loading = true
+    },
+    [assignTenant.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [assignTenant.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
   },
 });
 
