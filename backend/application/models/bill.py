@@ -28,7 +28,7 @@ class Bill():
             paid: bool = False,
             issue_date: date = datetime.now(),
             due_date: date = datetime.now() + timedelta(weeks=4)
-        ):
+        ) -> None:
         self.apartment_id = apartment_id
         self.tenant_id = tenant_id
         self.total_amount = total_amount
@@ -65,7 +65,7 @@ class Deposit_bill(Bill, db.Model):
             paid: bool = False,
             status: Deposit_status = Deposit_status.ACTIVE.value,
             refunded: bool = False
-        ):
+        ) -> None:
         super().__init__(          
             id = id,  
             apartment_id = apartment_id,
@@ -106,7 +106,7 @@ class Rent_bill(Bill, db.Model):
             charges : float = 0,
             management_fees: float = 0,
             period: str = "",
-        ):
+        ) -> None:
         super().__init__(          
             id = id,  
             apartment_id = apartment_id,

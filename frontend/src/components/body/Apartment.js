@@ -4,6 +4,7 @@ import InformationTable from "./informationTable/InformationTable";
 import Modal from "react-bootstrap/Modal";
 import Table from "./table/Table";
 import { getTenants } from "../state/features/tenantSlice";
+import Inventory_form from "./forms/Inventory_form";
 
 function Apartment() {
   //Application state
@@ -14,15 +15,26 @@ function Apartment() {
 
   const dispatch = useDispatch()
 
+  //Assign tenant modal
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  //Create inventory modal
+  const [show2, setShow2] = useState(false);
+  const handleClose2 = () => setShow2(false);
+  const handleShow2 = () => setShow2(true);
 
   let assignTenant = () => {
     dispatch(getTenants())
     handleShow()
   }
+
+  let createInventory = () => {
+    console.log("hello")
+    handleShow2()
+  }
+
 
   return (
     <div className={page === "Apartment" ? "page container-xxl" : "d-none"}>
@@ -33,7 +45,8 @@ function Apartment() {
       <div className={`tools d-flex bg-${theme.secondaryBackground} mb-2 p-2 border rounded-1`}>
         <button 
           className={`btn btn-outline-secondary text-${theme.text} me-2`}
-          type="button"onClick={() => assignTenant()}
+          type="button"
+          onClick={() => assignTenant()}
           >
             Assigner un locataire à cet appartement
         </button>
@@ -44,6 +57,7 @@ function Apartment() {
         </button>
         <button
           className={`btn btn-outline-secondary text-${theme.text}`}
+          onClick={() => createInventory()}
         >
           Ajouter un état des lieux</button>
       </div>
@@ -53,6 +67,14 @@ function Apartment() {
           headings={apartments.tenant_headings}
           data={[apartments.apartment.tenant]}
           consult={true}
+        />
+      </div>
+      <div>
+        <h5>Liste des états des lieux</h5>
+        <Table
+          headings={apartments.inventory_headings}
+          data={apartments.apartment.inventories}
+          deletion={true}
         />
       </div>
       <div>
@@ -92,6 +114,20 @@ function Apartment() {
             validation={handleClose}
             noborder={true}
             />
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={show2} onHide={handleClose2}>
+        <Modal.Header
+          className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}
+          closeButton
+        >
+          <Modal.Title className="text-center">
+            Créez un état des lieux
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}>
+          <Inventory_form validation={handleClose2}/>
         </Modal.Body>
       </Modal>
     </div>

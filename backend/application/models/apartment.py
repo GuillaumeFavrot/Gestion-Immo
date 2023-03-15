@@ -32,7 +32,7 @@ class Apartment(db.Model):
             in_management: bool = False,
             current_tenant_id: str = "",
             current_tenant_entry_date: str = datetime.now()
-        ):
+        ) -> None:
         self.address_1 = address_1
         self.address_2 = address_2
         self.zipcode = zipcode

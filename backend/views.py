@@ -6,6 +6,8 @@ from backend.exts import db
 from backend.application.models.tenant import Tenant
 from backend.application.models.apartment import Apartment
 from backend.application.models.bill import Deposit_bill, Rent_bill
+from backend.application.models.inventory import Inventory
+from backend.application.models.enums.enums import Inventory_type
 
 from backend.application.main_logic.tenant_assignment import tenant_assignment
 from backend.application.main_logic.rent_bill_creator import rent_bill_creator
@@ -14,6 +16,7 @@ from backend.application.main_logic.payment_processor import payment_processor
 from backend.schemas.tenant_schema import tenants_schema, tenant_schema, extended_tenant_schema
 from backend.schemas.apartment_schema import apartments_schema, apartment_schema
 from backend.schemas.bill_schema import deposit_bills_schema, rent_bills_schema, rent_bill_schema, deposit_bill_schema
+from backend.schemas.inventory_schema import inventories_schema
 
 import backend.config as config
 
@@ -162,6 +165,7 @@ def get_apartment():
         apartment.tenant = {}
     apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == id).all())
     apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == id).all())
+    apartment.inventories =  inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == id).all())
     return apartment_schema.dump(apartment)
 
 # Delete an apartment
@@ -187,7 +191,35 @@ def assign_tenant():
     apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())
     apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
     apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
+    apartment.inventories  = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
     return apartment_schema.dump(apartment)
+
+
+## @/api/apartment
+# Create an inventory
+@routes.route("/api/apartment/inventory", methods=['POST'])
+def create_inventory():
+    data = request.json
+    raw_date = data['date']
+    py_date = datetime.strptime(raw_date, "%Y-%m-%d")
+    print(py_date, type(py_date))
+    inventory = Inventory(
+        apartment_id=data['apartment_id'],
+        tenant_id=data['tenant_id'],
+        date=py_date,
+        type=data['inventory_type'],
+        remarks=data['remarks'],
+        id=id_gen()
+    )
+    db.session.add(inventory)
+    db.session.commit()
+    apartment = Apartment.query.get(data['apartment_id'])
+    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())
+    apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
+    apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
+    apartment.inventories = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
+    return apartment_schema.dump(apartment)
+
 
 #Get all messages
 

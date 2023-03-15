@@ -18,7 +18,7 @@ class Tenant(db.Model) :
             email: str,
             caf_payment: bool = False,
             apl_amount: float = 0
-            ):
+            ) -> None:
         self.id = id
         self.firstname = firstname
         self.lastname = lastname

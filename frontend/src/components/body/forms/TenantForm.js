@@ -52,7 +52,7 @@ function TenantForm({validation}) {
     };
     dispatch(createTenant(data))
     validation()
-  };
+  }
 
   return (
     <div>

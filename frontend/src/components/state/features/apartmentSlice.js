@@ -79,10 +79,23 @@ export const deleteApartment = createAsyncThunk(
 )
 
 export const assignTenant = createAsyncThunk(
-  'apartments/assignTenant',
+  'apartment/assignTenant',
   async (data) => {
     try {
       const response = await api.put(`/api/apartment`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const createInventory = createAsyncThunk(
+  'apartment/createInventory',
+  async (data) => {
+    try {
+      const response = await api.post(`/api/apartment/inventory`, data)
       return JSON.stringify(response)
     }
     catch (e) {
@@ -127,6 +140,13 @@ const apartmentSlice = createSlice({
       email: "Email",
       caf_payment: "APL",
       apl_amount: "Montant des APL"
+    },
+    inventory_headings: {
+      id: "ID",
+      type: "Type d'état des lieux",
+      tenant_id: "Locataire",
+      date: "Date",
+      remarks: "Remarques"
     },
     info_table_headings: [
       {
@@ -201,6 +221,7 @@ const apartmentSlice = createSlice({
       tenant: {},
       deposit_bills: [],
       rent_bills: [],
+      inventories: []
     },
 
     apartments: [],
@@ -279,6 +300,21 @@ const apartmentSlice = createSlice({
       state.apartment = res.data
     },
     [assignTenant.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //POST Create new inventory 
+    [createInventory.pending]: (state) => {
+      state.loading = true
+    },
+    [createInventory.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [createInventory.rejected]: (state, { error } ) => {
       state.loading = false
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },

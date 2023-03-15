@@ -32,6 +32,7 @@ class Apartment_schema(Schema):
     tenant = fields.Dict()
     deposit_bills = fields.List(fields.Dict())
     rent_bills = fields.List(fields.Dict())
+    inventories = fields.List(fields.Dict())
 
 # Schema initialization
 
