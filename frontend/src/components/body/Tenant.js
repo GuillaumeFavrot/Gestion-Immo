@@ -51,7 +51,7 @@ function Tenant() {
       </div>
 
       <div>
-        <h5>Liste des dépots</h5>
+        <h5>Liste des cautions</h5>
         <Table
           headings={tenants.deposit_headings}
           data={tenants.tenant.deposit_bills}

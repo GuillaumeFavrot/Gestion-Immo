@@ -22,9 +22,9 @@ class Rent_bill_schema(Schema):
     paid = fields.Bool()
     issue_date = fields.Date()
     due_date = fields.Date()
-    rent_amount = fields.Float(),
-    charges = fields.Float(),
-    management_fees = fields.Float(),
+    rent_amount = fields.Float()
+    charges = fields.Float()
+    management_fees = fields.Float()
     period = fields.Str()
     
 # Schema initialization

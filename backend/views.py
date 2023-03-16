@@ -12,6 +12,7 @@ from backend.application.models.enums.enums import Inventory_type
 from backend.application.main_logic.tenant_assignment import tenant_assignment
 from backend.application.main_logic.rent_bill_creator import rent_bill_creator
 from backend.application.main_logic.payment_processor import payment_processor
+from backend.application.main_logic.departure_processor import departure_processor
 
 from backend.schemas.tenant_schema import tenants_schema, tenant_schema, extended_tenant_schema
 from backend.schemas.apartment_schema import apartments_schema, apartment_schema
@@ -21,6 +22,7 @@ from backend.schemas.inventory_schema import inventories_schema
 import backend.config as config
 
 from backend.application.utilities.id_generator import id_gen
+
 
 #Creation of the blueprint
 
@@ -104,14 +106,12 @@ def create_rent_bill():
 @routes.route("/api/tenant/bill", methods=['PUT'])
 def pay_bill():
     data = request.json
-    print(data)
     tenant = Tenant.query.get(data['tenant'])
     bill = ""
     if data['type'] == "deposit":
         bill = Deposit_bill.query.get(data['bill'])
     else :
         bill = Rent_bill.query.get(data['bill'])
-    print(type(bill))
     payment_processor(tenant=tenant, bill=bill, paid_amount=float(data['paid_amount']))
     db.session.commit()
     tenant = Tenant.query.get(data['tenant'])
@@ -179,7 +179,7 @@ def delete_apartment():
     return apartment_schema.dump(apartments)
 
 # Assign a tenant to an apartment
-@routes.route("/api/apartment", methods=['PUT'])
+@routes.route("/api/apartment/assignment", methods=['PUT'])
 def assign_tenant():
     data = request.json
     apartment = Apartment.query.get(data['apartment_id'])
@@ -189,6 +189,22 @@ def assign_tenant():
     db.session.commit()
     apartment = Apartment.query.get(data['apartment_id'])
     apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())
+    apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
+    apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
+    apartment.inventories  = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
+    return apartment_schema.dump(apartment)
+
+# Unassign a tenant from an apartment
+@routes.route("/api/apartment/unassignment", methods=['PUT'])
+def unassign_tenant():
+    data = request.json
+    apartment = Apartment.query.get(data['apartment_id'])
+    tenant = Tenant.query.get(data['tenant_id'])
+    rents = pd.DataFrame(rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id'], Rent_bill.tenant_id == data['tenant_id']).all()))
+    result = departure_processor(tenant=tenant, apartment=apartment, rents=rents)
+    db.session.commit()
+    apartment = Apartment.query.get(data['apartment_id'])
+    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == data['tenant_id']).one())
     apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
     apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
     apartment.inventories  = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
@@ -212,6 +228,35 @@ def create_inventory():
         id=id_gen()
     )
     db.session.add(inventory)
+    db.session.commit()
+    apartment = Apartment.query.get(data['apartment_id'])
+    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())
+    apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
+    apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
+    apartment.inventories = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
+    return apartment_schema.dump(apartment)
+
+# Modify an inventory
+@routes.route("/api/apartment/inventory", methods=['PUT'])
+def modify_inventory():
+    data = request.json
+    inventory = Inventory.query.get(data['id'])
+    inventory.update_inventory(new_remarks=data['remarks'])
+    db.session.add(inventory)
+    db.session.commit()
+    apartment = Apartment.query.get(data['apartment_id'])
+    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == data['tenant_id']).one())
+    apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
+    apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
+    apartment.inventories = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
+    return apartment_schema.dump(apartment)
+
+# Modify an inventory
+@routes.route("/api/apartment/inventory", methods=['DELETE'])
+def delete_inventory():
+    data = request.json
+    inventory = Inventory.query.get(data['id'])
+    db.session.delete(inventory)
     db.session.commit()
     apartment = Apartment.query.get(data['apartment_id'])
     apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())

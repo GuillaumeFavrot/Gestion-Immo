@@ -68,7 +68,6 @@ class Balance_editor():
 
     def create_departure_balance(tenant: Tenant, apartment: Apartment, rents: DataFrame) -> None:
         """Create a tenant departure balance in .docx format"""
-        
         #Definition of the document template path
         document = MailMerge(f".{input_folder}/departure_balance_template.docx")
         
@@ -81,7 +80,7 @@ class Balance_editor():
         document.merge(
                 entry_date=f"{apartment.current_tenant_entry_date.day}/{apartment.current_tenant_entry_date.month}/{apartment.current_tenant_entry_date.year}",
                 exit_date= f"{datetime.now().day}/{datetime.now().month}/{datetime.now().year}",
-                total_rent_paid = str(rents.rent_amount.sum()),
+                total_rent_paid = str(rents.total_amount.sum()),
                 total_paid = str(rents.paid_amount.sum()),
                 address_2 = apartment.address_2, 
                 firstname = tenant.firstname, 

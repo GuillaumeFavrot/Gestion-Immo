@@ -4,6 +4,7 @@ import InformationTable from "./informationTable/InformationTable";
 import Modal from "react-bootstrap/Modal";
 import Table from "./table/Table";
 import { getTenants } from "../state/features/tenantSlice";
+import { unassignTenant } from "../state/features/apartmentSlice";
 import Inventory_form from "./forms/Inventory_form";
 
 function Apartment() {
@@ -31,8 +32,32 @@ function Apartment() {
   }
 
   let createInventory = () => {
-    console.log("hello")
-    handleShow2()
+    if (apartments.apartment.current_tenant_id === "") {
+      alert("Il n'est pas possible de saisir un état des lieux sans un locataire!")
+    } else {
+      handleShow2()
+    }
+  }
+
+  let tenantDepature = () => {
+    console.log('check')
+    let exit_inventory_done = false
+    let inventories = apartments.apartment.inventories
+    if (inventories.length > 0) {
+      for (let i = 0 ; i < inventories.length ; i++) {
+        console.log(inventories[i].apartment_id, apartments.apartment.id)
+        console.log(inventories[i].tenant_id, apartments.apartment.current_tenant_id)
+        console.log(inventories[i].type)
+        if (inventories[i].apartment_id === apartments.apartment.id && inventories[i].tenant_id === apartments.apartment.current_tenant_id && inventories[i].type === 'exit') {
+          exit_inventory_done = true
+        }
+      }
+    }
+    if (exit_inventory_done === true) {
+      dispatch(unassignTenant({apartment_id: apartments.apartment.id, tenant_id: apartments.apartment.current_tenant_id}))
+    } else {
+      alert("Il convient de réaliser un état des lieux de sortie avant d'acter la sortie d'un locataire")
+    }
   }
 
 
@@ -51,7 +76,7 @@ function Apartment() {
             Assigner un locataire à cet appartement
         </button>
         <button
-          className={`btn btn-outline-secondary text-${theme.text} me-2`}
+          className={`btn btn-outline-secondary text-${theme.text} me-2`} onClick={() => tenantDepature()}
         >
           Départ du locataire
         </button>
@@ -75,6 +100,7 @@ function Apartment() {
           headings={apartments.inventory_headings}
           data={apartments.apartment.inventories}
           deletion={true}
+          modification={true}
         />
       </div>
       <div>

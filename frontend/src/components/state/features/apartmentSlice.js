@@ -82,7 +82,20 @@ export const assignTenant = createAsyncThunk(
   'apartment/assignTenant',
   async (data) => {
     try {
-      const response = await api.put(`/api/apartment`, data)
+      const response = await api.put(`/api/apartment/assignment`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const unassignTenant = createAsyncThunk(
+  'apartment/unassignTenant',
+  async (data) => {
+    try {
+      const response = await api.put(`/api/apartment/unassignment`, data)
       return JSON.stringify(response)
     }
     catch (e) {
@@ -96,6 +109,32 @@ export const createInventory = createAsyncThunk(
   async (data) => {
     try {
       const response = await api.post(`/api/apartment/inventory`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const modifyInventory = createAsyncThunk(
+  'apartment/modifyInventory',
+  async (data) => {
+    try {
+      const response = await api.put(`/api/apartment/inventory`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
+export const deleteInventory = createAsyncThunk(
+  'apartment/deleteInventory',
+  async (data) => {
+    try {
+      const response = await api.delete(`/api/apartment/inventory`, {data : {id : data.id, apartment_id: data.apartment_id}})
       return JSON.stringify(response)
     }
     catch (e) {
@@ -304,6 +343,21 @@ const apartmentSlice = createSlice({
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },
 
+    //PUT unassign tenant reducer reducer 
+    [unassignTenant.pending]: (state) => {
+      state.loading = true
+    },
+    [unassignTenant.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [unassignTenant.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
     //POST Create new inventory 
     [createInventory.pending]: (state) => {
       state.loading = true
@@ -315,6 +369,36 @@ const apartmentSlice = createSlice({
       state.apartment = res.data
     },
     [createInventory.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //PUT Modify an inventory 
+    [modifyInventory.pending]: (state) => {
+      state.loading = true
+    },
+    [modifyInventory.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [modifyInventory.rejected]: (state, { error } ) => {
+      state.loading = false
+      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+    },
+
+    //PUT Modify an inventory 
+    [deleteInventory.pending]: (state) => {
+      state.loading = true
+    },
+    [deleteInventory.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [deleteInventory.rejected]: (state, { error } ) => {
       state.loading = false
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },
