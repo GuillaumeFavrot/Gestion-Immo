@@ -79,6 +79,10 @@ class Deposit_bill(Bill, db.Model):
         self.total_amount = self.deposit_amount
         self.status = status
         self.refunded = refunded
+    
+    def deactivate(self):
+        self.status = Deposit_status.NON_ACTIVE.value
+        self.refunded = True
         
 
 class Rent_bill(Bill, db.Model):

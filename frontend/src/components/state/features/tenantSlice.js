@@ -104,6 +104,19 @@ export const payBill = createAsyncThunk(
   }
 )
 
+export const receiptRequest = createAsyncThunk(
+  'tenant/receiptRequest',
+  async (request) => {
+    try {
+      const response = await api.post(`/api/tenant/receipt`, request)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 const tenantSlice = createSlice({
   name: "tenants",
   initialState: {

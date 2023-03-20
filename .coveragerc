@@ -1,0 +1,3 @@
+[run]
+source = src
+omit = __init__.py,manage.py, backend\views.py, backend\schemas\tenant_schema.py, backend\schemas\bill_schema.py, backend\schemas\inventory_schema.py, backend\schemas\apartment_schema.py, backend\tests\__init__.py, backend\config.py, backend\app.py

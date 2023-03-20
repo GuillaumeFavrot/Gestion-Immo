@@ -25,7 +25,7 @@ months = {
     "december": "1er au 31 decembre"
 }
 
-def receipt_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, requested_period: list) -> str:
+def receipt_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, requested_period: list, pdf:bool) -> str:
     """Handles the creation and sending process of requested receipts"""
 
     #Input type validation
@@ -66,7 +66,8 @@ def receipt_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, re
     Receipt_editor.create_receipt(tenant=tenant, apartment=apartment, rents=rents, requested_period=requested_period)
     
     #Conversion of the receipt to pdf 
-    convert_documents_to_pdf()
+    if pdf == True:
+        convert_documents_to_pdf()
     
     #Creation of the email
     email = Email_manager.create_email(

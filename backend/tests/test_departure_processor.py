@@ -40,29 +40,42 @@ bill = Rent_bill(
         period="january_2023"
     )
 
+deposit_bill = Deposit_bill(
+        id= id_gen(),
+        tenant_id="Test_id",
+        apartment_id="Test_id",
+        deposit_amount=a.deposit
+    )
+
 bill = bill.__dict__
 
 #Tests the departure process success
 def test_departure_processor_success() -> None:
     """Checks the success of the depature processor function if provided with appropriate arguments"""
-    test = departure_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]))
+    test = departure_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), deposit_bill=deposit_bill, pdf=True)
     assert test == "Departure successfuly processed"
 
 #Tests input type errors
 def test_departure_processor_bad_tenant_failure() -> None:
     """Checks the failure of the depature processor function if provided with a string instead of a tenant"""
-    test = departure_processor(tenant="test", apartment=a, rents=pd.DataFrame(bill, index=[0,]))
+    test = departure_processor(tenant="test", apartment=a, rents=pd.DataFrame(bill, index=[0,]), deposit_bill=deposit_bill, pdf=True)
     assert test == "Error: incorrect tenant argument"
 
 def test_departure_processor_bad_apartment_failure() -> None:
     """Checks the failure of the depature processor function if provided with a string instead of an apartment"""
-    test = departure_processor(tenant=l, apartment="test", rents=pd.DataFrame(bill, index=[0,]))
+    test = departure_processor(tenant=l, apartment="test", rents=pd.DataFrame(bill, index=[0,]), deposit_bill=deposit_bill, pdf=True)
     assert test == "Error: incorrect apartment argument"
 
 def test_departure_processor_bad_rents_failure() -> None:
     """Checks the failure of the depature processor function if provided with a string instead of a rents Dataframe"""
-    test = departure_processor(tenant=l, apartment=a, rents="test")
+    test = departure_processor(tenant=l, apartment=a, rents="test", deposit_bill=deposit_bill, pdf=True)
     assert test == "Error: incorrect rents argument"
+
+def test_departure_processor_no_deposit_bill_failure() -> None:
+    """Checks the failure of the depature processor function if provided with a string instead of a deposit bill"""
+    test = departure_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), deposit_bill="test", pdf=True)
+    assert test == "Error: incorrect deposit_bill argument"
+
 
 #Test that the input checks suite is properly called and works as intended
 def test_input_checks_suite() -> None:
@@ -79,5 +92,5 @@ def test_input_checks_suite() -> None:
         in_management=True,
         current_tenant_id="Test_id_2", 
     )
-    test = departure_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]))
+    test = departure_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), deposit_bill=deposit_bill, pdf=True)
     assert test == "Error: The tenant is not assigned to the provided apartment"

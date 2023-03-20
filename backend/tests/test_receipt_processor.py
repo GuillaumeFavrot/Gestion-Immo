@@ -47,28 +47,28 @@ bill = bill.__dict__
 #Success test
 def test_receipt_processor_success() -> None:
     """Checks the success of the receipt processor function if provided with appropriate arguments"""
-    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period)
+    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period, pdf=True)
     assert test == "Required receipts successfuly created and sent"
 
 #Type error test
 def test_departure_processor_bad_tenant_type_failure() -> None:
     """Checks the failure of the receipt processor function if provided with a string instead of a tenant"""
-    test = receipt_processor(tenant="test", apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period)
+    test = receipt_processor(tenant="test", apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period, pdf=True)
     assert test == "Error: incorrect tenant argument"
 
 def test_departure_processor_bad_apartment_type_failure() -> None:
     """Checks the failure of the receipt processor function if provided with a string instead of a apartment"""
-    test = receipt_processor(tenant=l, apartment="test", rents=pd.DataFrame(bill, index=[0,]), requested_period=period)
+    test = receipt_processor(tenant=l, apartment="test", rents=pd.DataFrame(bill, index=[0,]), requested_period=period, pdf=True)
     assert test == "Error: incorrect apartment argument"
 
 def test_departure_processor_bad_rents_type_failure() -> None:
     """Checks the failure of the receipt processor function if provided with a string instead of a rents Dataframe"""
-    test = receipt_processor(tenant=l, apartment=a, rents="test", requested_period=period)
+    test = receipt_processor(tenant=l, apartment=a, rents="test", requested_period=period, pdf=True)
     assert test == "Error: incorrect rents argument"
 
 def test_departure_processor_bad_period_type_failure() -> None:
     """Checks the failure of the receipt processor function if provided with a string instead of a period list"""
-    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period="test")
+    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period="test", pdf=True)
     assert test == "Error: incorrect requested_period argument"
 
 #Test that the input checks suite is properly called and works as intended
@@ -86,14 +86,14 @@ def test_input_checks_suite() -> None:
         in_management=True,
         current_tenant_id="Test_id_2", 
     )
-    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period)
+    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period, pdf=True)
     assert test == "Error: The tenant is not assigned to the provided apartment"
 
 #Requested period tests
 def test_departure_processor_invalid_period_failure() -> None:
     """Checks the failure of the receipt processor function if provided with an improper period"""
     period = ["january_2023", "february_2023"]
-    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period)
+    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period, pdf=True)
     assert test == "Error: The requested period in invalid"
 
 def test_departure_processor_rent_non_payment_failure() -> None:
@@ -109,5 +109,5 @@ def test_departure_processor_rent_non_payment_failure() -> None:
         period="january_2023"
     )
     bill = bill.__dict__
-    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period)
+    test = receipt_processor(tenant=l, apartment=a, rents=pd.DataFrame(bill, index=[0,]), requested_period=period, pdf=True)
     assert test == "Error: All bills of the required period have not been paid"

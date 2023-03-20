@@ -5,6 +5,7 @@ from backend.application.utilities.email_manager import Email_manager
 
 from backend.application.models.apartment import Apartment
 from backend.application.models.tenant import Tenant
+from backend.application.models.bill import Deposit_bill
 
 from mailmerge import MailMerge
 
@@ -13,14 +14,17 @@ from backend.application.utilities.editor_input_checker import editor_input_chec
 from datetime import datetime
 
 
-def departure_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame) -> str:
+def departure_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, deposit_bill: Deposit_bill, pdf:bool) -> str:
     """Handles the depature process of a tenant from an apartment"""
 
     #Input validation
     if type(tenant) == Tenant:
         if type(apartment) == Apartment:
             if type(rents) == DataFrame:
-                pass
+                if type(deposit_bill) == Deposit_bill:
+                    pass
+                else:
+                    return "Error: incorrect deposit_bill argument"
             else:
                 return "Error: incorrect rents argument"
         else:
@@ -38,11 +42,15 @@ def departure_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame) 
     #Deletion the tenant from the apartment data
     apartment.remove_tenant()
 
+    #Depostif bill deactivation
+    deposit_bill.deactivate()
+
     #Creation of the depature balance document
     Balance_editor.create_departure_balance(tenant=tenant, apartment=apartment, rents=rents)
 
-    #Conversion of the balance to pdf
-    convert_documents_to_pdf()
+    #Conversion of the balance to pdf -- Throws windows errors when launched from within flask
+    if pdf == True:
+        convert_documents_to_pdf()
 
     #Creation of the email
     email = Email_manager.create_email(

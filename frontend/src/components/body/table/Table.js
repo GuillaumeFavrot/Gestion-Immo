@@ -4,15 +4,15 @@ import TableEntry from "./TableEntry";
 import { useSelector } from "react-redux";
 
 function Table({ headings, data, consult, deletion, pay, select, validation, noborder, modification }) {
-  const theme = useSelector((state) => state.view.theme);
-
+  const theme = useSelector((state) => state.view.theme)
+  
   return (
     <div className={noborder === true ? "" : "border mb-3"}>
       <table className={`table table-${theme.secondaryBackground} mb-0`}>
         <thead>
           <tr>
             {Object.entries(headings).map((heading) => (
-              <TableHeading key={heading} heading={heading[1]} />
+              <TableHeading key={heading[0]} heading={heading[1]} />
             ))}
             <th className={consult === true ? "heading" : "d-none"}>
               Consulter

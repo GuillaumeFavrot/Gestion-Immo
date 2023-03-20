@@ -40,23 +40,23 @@ function Apartment() {
   }
 
   let tenantDepature = () => {
-    console.log('check')
-    let exit_inventory_done = false
-    let inventories = apartments.apartment.inventories
-    if (inventories.length > 0) {
-      for (let i = 0 ; i < inventories.length ; i++) {
-        console.log(inventories[i].apartment_id, apartments.apartment.id)
-        console.log(inventories[i].tenant_id, apartments.apartment.current_tenant_id)
-        console.log(inventories[i].type)
-        if (inventories[i].apartment_id === apartments.apartment.id && inventories[i].tenant_id === apartments.apartment.current_tenant_id && inventories[i].type === 'exit') {
-          exit_inventory_done = true
+    let response = prompt("Saisissez l'ID du locataire pour confirmer la demande de départ")
+    if (response === apartments.apartment.current_tenant_id) {
+      let exit_inventory_done = false
+      let inventories = apartments.apartment.inventories
+      if (inventories.length > 0) {
+        for (let i = 0 ; i < inventories.length ; i++) {
+          if (inventories[i].apartment_id === apartments.apartment.id && inventories[i].tenant_id === apartments.apartment.current_tenant_id && inventories[i].type === 'exit') {
+            exit_inventory_done = true
+          }
         }
       }
-    }
-    if (exit_inventory_done === true) {
-      dispatch(unassignTenant({apartment_id: apartments.apartment.id, tenant_id: apartments.apartment.current_tenant_id}))
-    } else {
-      alert("Il convient de réaliser un état des lieux de sortie avant d'acter la sortie d'un locataire")
+      if (exit_inventory_done === true) {
+        dispatch(unassignTenant({apartment_id: apartments.apartment.id, tenant_id: apartments.apartment.current_tenant_id}))
+        alert('Le départ du locataire a bien été entregistré')
+      } else {
+        alert("Il convient de réaliser un état des lieux de sortie avant d'acter la sortie d'un locataire")
+      }
     }
   }
 
@@ -108,7 +108,6 @@ function Apartment() {
         <Table
           headings={apartments.deposit_headings}
           data={apartments.apartment.deposit_bills}
-          pay={true}
         />
       </div>
       <div>
@@ -116,7 +115,6 @@ function Apartment() {
         <Table
           headings={apartments.rent_headings}
           data={apartments.apartment.rent_bills}
-          pay={true}
         />
       </div>
 

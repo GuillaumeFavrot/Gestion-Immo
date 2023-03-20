@@ -15,7 +15,7 @@ function InformationTable({item, displayed_info}) {
             <h3 className={`card-title bg-${theme.secondaryBackground} text-${theme.text}`}>{page === "Tenant" ? "Locataire" : "Appartement"} - Informations générales</h3>
             <ul className="list-group list-group-flush">
               {Object.entries(displayed_info).map((info) => (
-                <InformationTableEntry item={item} info={info}/>
+                <InformationTableEntry key={info[1].name} item={item} info={info}/>
               ))}
             </ul>
           </div>

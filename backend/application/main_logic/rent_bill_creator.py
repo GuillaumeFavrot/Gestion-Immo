@@ -8,11 +8,8 @@ from backend.application.models.bill import Rent_bill
 
 def rent_bill_creator(tenant: Tenant, apartment: Apartment, period: str, former_rents: DataFrame):
     """Handles the creation process of a rent bill"""
-    print(former_rents.shape[0])
-    print(former_rents)
     if former_rents.shape[0] > 0 :
         if period in former_rents.period.values:
-            print("A bill has already been created for this tenant on this period")
             return "A bill has already been created for this tenant on this period"
 
     return Rent_bill(
