@@ -49,6 +49,8 @@ class Apartment(db.Model):
     def update_apartment_financial_data(self, data_type: Apartment_fiancial_data, new_data: float) -> None:
         """Updates an appartment's financial data. Needs an Apartment,  the type of data to update, a lastname, the new piece of information."""
         setattr(self, data_type.value, new_data)
+        print(self.monthly_rent)
+        setattr(self, "management_fees", float(self.monthly_rent) / 100 * 8)
 
     def assign_new_tenant(self, tenant: Tenant, entry_date: date) -> None:
         setattr(self, "current_tenant_id", tenant.id)

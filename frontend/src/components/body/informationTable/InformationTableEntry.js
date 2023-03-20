@@ -1,8 +1,22 @@
-import React from 'react'
+import React, {useState} from "react";
 import { useSelector } from "react-redux";
+import Modal from "react-bootstrap/Modal";
+import Modification_form from "../forms/Modification_form";
 
 function InformationTableEntry({item, info}) {
-    const theme = useSelector((state) => state.view.theme);
+    //Application state
+    const theme = useSelector((state) => state.view.theme)
+
+    //Local state
+    const [show, setShow] = useState(false);
+  
+    //Create bill handlers
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const modificationRequest = () => {
+        handleShow()
+    }
 
     let data = item[info[1].name]
     if (data === true) {
@@ -22,6 +36,7 @@ function InformationTableEntry({item, info}) {
             </div>
             <button
             className={info[1].modifiable === true ? "btn-table info-card-btn d-flex justify-content-end align-items-center" : "d-none"}
+            onClick={() => modificationRequest()}
             >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -37,6 +52,20 @@ function InformationTableEntry({item, info}) {
                 />
             </svg>
             </button>
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header
+                    className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}
+                    closeButton
+                >
+                    <Modal.Title className="text-center">
+                        Modifier une donnée
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className={`bg-${theme.secondaryBackground} text-${theme.text} border-secondary`}>
+                    <Modification_form item={item} info={info} validation={handleClose}/>
+                </Modal.Body>
+            </Modal>
         </li>
     )
 }

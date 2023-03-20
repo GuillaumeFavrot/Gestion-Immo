@@ -3,20 +3,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { receiptRequest } from '../../state/features/tenantSlice';
 
 function ReceiptForm({validation}) {
+    
     //Application state
-    const theme = useSelector((state) => state.view.theme);
-    const tenant = useSelector((state) => state.tenants.tenant);
-    const ref = React.useRef(null);
+    const theme = useSelector((state) => state.view.theme)
+    const tenant = useSelector((state) => state.tenants.tenant)
+    
     //Component state
     const [apartment, setApartment] = useState("")
     const [filteredBillList, setFilteredBillList] = useState([])
-    const [checkedState, setCheckedState] = useState([]);
-    const [period, setPeriod] = useState([])
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    const [checkedState, setCheckedState] = useState([])
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
     //Dispatcher setup
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     //Bill list setup
     let billList = tenant.rent_bills
@@ -31,15 +31,13 @@ function ReceiptForm({validation}) {
         }
         setFilteredBillList(newlist)
         setCheckedState(newStatelist)
-        console.log(filteredBillList)
-        console.log(checkedState)
     }
   
     //Modification function
     const onChange = (e) => {
         createBillList(e.target.value)
-        setApartment(e.target.value);
-        setSuccess("");
+        setApartment(e.target.value)
+        setSuccess("")
     };
 
     const onCheck = (e) => {
@@ -51,31 +49,26 @@ function ReceiptForm({validation}) {
             }
         }
         setCheckedState(checked)
-        // console.log(e.target.id)
-        // console.log(checkedState)
     }
 
     //Submit function
     const onSubmit = (e) => {
-        e.preventDefault();
-        setError("");
-        console.log(checkedState)
+        e.preventDefault()
+        setError("")
         let checked =[]
         for (let i=0; i<checkedState.length; i++) {
             if (checkedState[i][1] === true){
                 checked.push(checkedState[i][0].period)
             }
         }
-        setPeriod(checked)
         let request = {
             tenant_id: tenant.id,
             apartment_id: apartment,
             period: checked
         }
-        console.log("request", request)
         dispatch(receiptRequest(request))
         validation()
-    };
+    }
 
     return (
         <div>
@@ -91,7 +84,7 @@ function ReceiptForm({validation}) {
                     </select>
                 </div>
                 
-                <div className={filteredBillList.length === 0 ? "d-none" : `input-group mb-3 d-flex flex-column`}onChange={(e) => onCheck(e)} ref={ref}>
+                <div className={filteredBillList.length === 0 ? "d-none" : `input-group mb-3 d-flex flex-column`}onChange={(e) => onCheck(e)}>
                     {filteredBillList.map((bill) => (
                         <div className={`input-group-text border-dark bg-${theme.secondaryBackground} text-${theme.text}`}>
                             <input type="checkbox" className="form-check-input me-3" id={`${bill.period}`}  value={`${bill.period}`} ></input>

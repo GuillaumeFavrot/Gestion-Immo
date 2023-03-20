@@ -78,6 +78,19 @@ export const deleteApartment = createAsyncThunk(
   }
 )
 
+export const updateApartment = createAsyncThunk(
+  'test/updateApartment',
+  async (data) => {
+    try {
+      const response = await api.put(`/api/apartment`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 export const assignTenant = createAsyncThunk(
   'apartment/assignTenant',
   async (data) => {
@@ -229,6 +242,11 @@ const apartmentSlice = createSlice({
         modifiable: true
       },
       {
+        name: "management_fees",
+        display_name: 'Frais de gestion', 
+        modifiable: false
+      },
+      {
         name: "deposit",
         display_name: 'Caution', 
         modifiable: true
@@ -275,12 +293,12 @@ const apartmentSlice = createSlice({
     [createApartment.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `POST Request ${res.statusText} with status code ${res.status}`
       state.apartments = res.data
     },
     [createApartment.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'POST request failed with status code 404' : `POST ${error.message}`
     },
 
     //GET Apartements reducer  
@@ -328,6 +346,22 @@ const apartmentSlice = createSlice({
       state.statusText = `DELETE ${error.message}`
     },
 
+    //PUT update apartment reducers
+    [updateApartment.pending]: (state) => {
+      state.loading = true
+    },
+    [updateApartment.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `PUT Request ${res.statusText} with status code ${res.status}`
+      state.apartment = res.data
+    },
+    [updateApartment.rejected]: (state, { error }) => {
+      state.loading = false
+      state.statusText = `PUT ${error.message}`
+    },
+
+
     //PUT Assign tenant reducer reducer 
     [assignTenant.pending]: (state) => {
       state.loading = true
@@ -335,12 +369,12 @@ const apartmentSlice = createSlice({
     [assignTenant.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `PUT Request ${res.statusText} with status code ${res.status}`
       state.apartment = res.data
     },
     [assignTenant.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'PUT request failed with status code 404' : `PUT ${error.message}`
     },
 
     //PUT unassign tenant reducer reducer 
@@ -350,12 +384,12 @@ const apartmentSlice = createSlice({
     [unassignTenant.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `PUT Request ${res.statusText} with status code ${res.status}`
       state.apartment = res.data
     },
     [unassignTenant.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'PUT request failed with status code 404' : `PUT ${error.message}`
     },
 
     //POST Create new inventory 
@@ -365,12 +399,12 @@ const apartmentSlice = createSlice({
     [createInventory.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `POST Request ${res.statusText} with status code ${res.status}`
       state.apartment = res.data
     },
     [createInventory.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'POST request failed with status code 404' : `POST ${error.message}`
     },
 
     //PUT Modify an inventory 
@@ -380,27 +414,27 @@ const apartmentSlice = createSlice({
     [modifyInventory.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `PUT Request ${res.statusText} with status code ${res.status}`
       state.apartment = res.data
     },
     [modifyInventory.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'PUT request failed with status code 404' : `PUT ${error.message}`
     },
 
-    //PUT Modify an inventory 
+    //DELETE modify an inventory 
     [deleteInventory.pending]: (state) => {
       state.loading = true
     },
     [deleteInventory.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `DELETE Request ${res.statusText} with status code ${res.status}`
       state.apartment = res.data
     },
     [deleteInventory.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'DELETE request failed with status code 404' : `DELETE ${error.message}`
     },
   },
 });

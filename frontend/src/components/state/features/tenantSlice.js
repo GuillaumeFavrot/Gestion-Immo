@@ -78,6 +78,19 @@ export const deleteTenant = createAsyncThunk(
   }
 )
 
+export const updateTenant = createAsyncThunk(
+  'tenant/updateTenant',
+  async (data) => {
+    try {
+      const response = await api.put(`/api/tenant`, data)
+      return JSON.stringify(response)
+    }
+    catch (e) {
+      throw(e)
+    }
+  }
+)
+
 export const createRentBill = createAsyncThunk(
   'tenant/createRentBill',
   async (request) => {
@@ -218,12 +231,12 @@ const tenantSlice = createSlice({
     [createTenant.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `POST Request ${res.statusText} with status code ${res.status}`
       state.tenants = res.data
     },
     [createTenant.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'POST request failed with status code 404' : `POST ${error.message}`
     },
 
     //GET Tenants reducer  
@@ -257,7 +270,7 @@ const tenantSlice = createSlice({
       state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
     },
 
-    //DELETE reducers
+    //DELETE tenant reducers
     [deleteTenant.pending]: (state) => {
       state.loading = true
     },
@@ -272,6 +285,21 @@ const tenantSlice = createSlice({
       state.statusText = `DELETE ${error.message}`
     },
 
+    //PUT Update tenant reducers
+    [updateTenant.pending]: (state) => {
+      state.loading = true
+    },
+    [updateTenant.fulfilled]: (state, { payload } ) => {
+      let res = JSON.parse(payload)
+      state.loading = false
+      state.statusText = `PUT Request ${res.statusText} with status code ${res.status}`
+      state.tenant = res.data
+    },
+    [updateTenant.rejected]: (state, { error }) => {
+      state.loading = false
+      state.statusText = `PUT ${error.message}`
+    },
+
     //POST new rent bill
     [createRentBill.pending]: (state) => {
       state.loading = true
@@ -279,27 +307,27 @@ const tenantSlice = createSlice({
     [createRentBill.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `POST Request ${res.statusText} with status code ${res.status}`
       state.tenant = res.data
     },
     [createRentBill.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'POST request failed with status code 404' : `POST ${error.message}`
     },
 
-    //POST new rent bill
+    //PUT pay bill
     [payBill.pending]: (state) => {
       state.loading = true
     },
     [payBill.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
       state.loading = false
-      state.statusText = `GET Request ${res.statusText} with status code ${res.status}`
+      state.statusText = `PUT Request ${res.statusText} with status code ${res.status}`
       state.tenant = res.data
     },
     [payBill.rejected]: (state, { error } ) => {
       state.loading = false
-      state.statusText = error.message === 'Network Error' ? 'GET request failed with status code 404' : `GET ${error.message}`
+      state.statusText = error.message === 'Network Error' ? 'PUT request failed with status code 404' : `PUT ${error.message}`
     },
   },
 });

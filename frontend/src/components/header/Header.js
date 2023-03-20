@@ -19,7 +19,7 @@ function Header() {
       <div className={`container-fluid text-${theme.text}`}>
         <button
           className={`btn btn-${theme.background} text-${theme.text} mb-1`}
-          onClick={(e) => pageRequest(e, "Home")}
+          onClick={(e) => pageRequest(e, "Apartments")}
         >
           <h1 className="mb-0 bold">GestImmo</h1>
         </button>

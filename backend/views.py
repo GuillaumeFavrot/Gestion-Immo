@@ -7,7 +7,7 @@ from backend.application.models.tenant import Tenant
 from backend.application.models.apartment import Apartment
 from backend.application.models.bill import Deposit_bill, Rent_bill
 from backend.application.models.inventory import Inventory
-from backend.application.models.enums.enums import Inventory_type
+from backend.application.models.enums.enums import Tenant_data_type, Apartment_fiancial_data
 
 from backend.application.main_logic.tenant_assignment import tenant_assignment
 from backend.application.main_logic.rent_bill_creator import rent_bill_creator
@@ -76,6 +76,33 @@ def get_tenant():
     tenant.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == id).all())
     return extended_tenant_schema.dump(tenant)
 
+# Update a tenant data
+@routes.route("/api/tenant", methods=['PUT'])
+def update_tenant_data():
+    data = request.json
+    tenant = Tenant.query.get(data['tenant_id'])
+    
+    data_type = ""
+    if data['data_type'] == "firstname" :
+        data_type = Tenant_data_type.FIRSTNAME
+    if data['data_type'] == "lastname":
+        data_type = Tenant_data_type.LASTNAME
+    if data['data_type'] == "email":
+        data_type = Tenant_data_type.EMAIL
+    if data['data_type'] == "caf_payment":
+        data_type = Tenant_data_type.CAF_PAYMENT
+    if data['data_type'] == "apl_amount":
+        data_type = Tenant_data_type.APL_AMOUNT
+
+    tenant.update_tenant_data(data_type=data_type, new_data=data['new_data'])
+    db.session.commit()
+
+    tenant = Tenant.query.get(data['tenant_id'])
+    tenant.apartments = apartments_schema.dump(Apartment.query.filter(Apartment.current_tenant_id == data['tenant_id']).all())
+    tenant.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.tenant_id == data['tenant_id']).all())
+    tenant.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant_id']).all())
+    return extended_tenant_schema.dump(tenant)
+
 # Delete a tenant
 @routes.route("/api/tenant", methods=['DELETE'])
 def delete_tenant():
@@ -122,7 +149,7 @@ def pay_bill():
 
     return extended_tenant_schema.dump(tenant)
 
-#Receipt
+#Receipt processing
 @routes.route("/api/tenant/receipt", methods=['POST'])
 def get_receipt():
     print("request")
@@ -130,15 +157,11 @@ def get_receipt():
     tenant = Tenant.query.get(data['tenant_id'])
     apartment = Apartment.query.get(data['apartment_id'])
     rents = pd.DataFrame(rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id'], Rent_bill.tenant_id == data['tenant_id']).all()))
-    
     response = receipt_processor(tenant=tenant, apartment=apartment, rents=rents, requested_period=data['period'], pdf=False)
-
-    print(response)
     tenant = Tenant.query.get(data['tenant_id'])
     tenant.apartments = apartments_schema.dump(Apartment.query.filter(Apartment.current_tenant_id == data['tenant_id']).all())
     tenant.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.tenant_id == data['tenant_id']).all())
     tenant.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.tenant_id == data['tenant_id']).all())
-
     return extended_tenant_schema.dump(tenant)
 
 
@@ -182,6 +205,30 @@ def get_apartment():
     apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == id).all())
     apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == id).all())
     apartment.inventories =  inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == id).all())
+    return apartment_schema.dump(apartment)
+
+# Update an partment data
+@routes.route("/api/apartment", methods=['PUT'])
+def update_apartment_data():
+    data = request.json
+    apartment = Apartment.query.get(data['apartment_id'])
+    
+    data_type = ""
+    if data['data_type'] == "monthly_charges" :
+        data_type = Apartment_fiancial_data.CHARGES
+    if data['data_type'] == "monthly_rent":
+        data_type = Apartment_fiancial_data.RENT
+    if data['data_type'] == "deposit":
+        data_type = Apartment_fiancial_data.DEPOSIT
+
+    apartment.update_apartment_financial_data(data_type=data_type, new_data=data['new_data'])
+    db.session.commit()
+
+    apartment = Apartment.query.get(data['apartment_id'])
+    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())
+    apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
+    apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
+    apartment.inventories  = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
     return apartment_schema.dump(apartment)
 
 # Delete an apartment
