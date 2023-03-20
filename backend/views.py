@@ -1,5 +1,6 @@
 from datetime import datetime
 import pandas as pd
+from sqlalchemy import or_
 
 from flask import Blueprint, send_from_directory, request
 from backend.exts import db
@@ -45,7 +46,13 @@ def index():
 # Get all tenants
 @routes.route("/api/tenants", methods=['GET'])
 def get_tenants():
-    tenants = Tenant.query.all()
+    data = "".join(list(str(request.query_string))[7:-1:])
+    print(data)
+    if data == "":
+        tenants = Tenant.query.all()
+    else :
+        print(data)
+        tenants = Tenant.query.filter(or_(Tenant.lastname.contains(data), Tenant.firstname.contains(data), Tenant.id.contains(data))).all()
     return tenants_schema.dump(tenants)
 
 # Create a Tenant
@@ -169,7 +176,13 @@ def get_receipt():
 # Get all apartments
 @routes.route("/api/apartments", methods=['GET'])
 def get_apartments():
-    apartments = Apartment.query.all()
+    print(str(request.query_string))
+    data = "".join(list(str(request.query_string))[7:-1:])
+    print(data)
+    if data == "":
+        apartments = Apartment.query.all()
+    else :
+        apartments = Apartment.query.filter(or_(Apartment.address_1.contains(data), Apartment.address_2.contains(data), Apartment.id.contains(data))).all()
     return apartments_schema.dump(apartments)
 
 # Create an apartment

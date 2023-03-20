@@ -28,9 +28,9 @@ const api = axios.create({
 
 export const getApartments = createAsyncThunk(
   'apartments/getApartments',
-  async () => {
+  async (data) => {
     try {
-      const response = await api.get(`/api/apartments`)
+      const response = await api.get(`/api/apartments`, {params: {data: data}})
       return JSON.stringify(response)
     }
     catch (e) {

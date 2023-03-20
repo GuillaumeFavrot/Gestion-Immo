@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import { useSelector, useDispatch } from "react-redux";
-import { updateApartment } from '../../state/features/apartmentSlice';
-import { receiptRequest, updateTenant } from '../../state/features/tenantSlice';
+import { useSelector, useDispatch } from "react-redux"
+import { updateApartment } from '../../state/features/apartmentSlice'
+import { updateTenant } from '../../state/features/tenantSlice'
 
 function Modification_form({item, info, validation}) {
     

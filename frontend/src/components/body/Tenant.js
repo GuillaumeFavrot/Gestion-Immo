@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Rent_bill_form from "./forms/Rent_bill_form";
 import InformationTable from "./informationTable/InformationTable";
 import Table from "./table/Table";
-import ReceiptForm from "./forms/ReceiptForm";
+import ReceiptForm from "./forms/Receipt_form";
 
 function Tenant() {
   //Application state
