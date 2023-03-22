@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
-import axios from 'axios';
+import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit"
+import axios from 'axios'
 
 //URL and axios setup
 
@@ -20,7 +20,7 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
   },
-});
+})
 
 // Action creators
 // All action creators are rigged to handle basic CRUD operations and throw query errors.
@@ -330,6 +330,6 @@ const tenantSlice = createSlice({
       state.statusText = error.message === 'Network Error' ? 'PUT request failed with status code 404' : `PUT ${error.message}`
     },
   },
-});
+})
 
 export default tenantSlice.reducer;

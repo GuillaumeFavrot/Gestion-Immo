@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { updateApartment } from '../../state/features/apartmentSlice'
-import { updateTenant } from '../../state/features/tenantSlice'
+import { updateApartment } from '../../state/features/apartment_slice'
+import { updateTenant } from '../../state/features/tenant_slice'
 
 function Modification_form({item, info, validation}) {
-    
+
     //Application state
     const theme = useSelector((state) => state.view.theme)
     const page = useSelector((state) => state.view.page)
@@ -18,7 +18,7 @@ function Modification_form({item, info, validation}) {
 
     //Dispatcher setup
     const dispatch = useDispatch()
-  
+    
     //Modification function
     const onChange = (e) => {
         setData(e.target.value)
@@ -46,9 +46,11 @@ function Modification_form({item, info, validation}) {
         setError("")
         validation()
     }
+
     return (
         <div>
-            <form onSubmit={(e) => {onSubmit(e)}}>
+            <form onSubmit={(e) => onSubmit(e)}>
+
                 <div className="mb-3">
                     <label for="inventory_type" className="form-label">{info[1].display_name}</label>
                     <input
@@ -62,10 +64,11 @@ function Modification_form({item, info, validation}) {
                 </div>
 
                 <div className="d-flex justify-content-center">
-                <button type="submit" className="btn btn-success">
-                    Envoyer
-                </button>
+                    <button type="submit" className="btn btn-success">
+                        Envoyer
+                    </button>
                 </div>
+
             </form>
         </div>
     )

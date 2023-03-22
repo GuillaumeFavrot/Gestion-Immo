@@ -1,21 +1,22 @@
 import React, {useState} from 'react'
-import { useSelector, useDispatch } from "react-redux";
-import { createRentBill } from "../../state/features/tenantSlice";
+import { useSelector, useDispatch } from "react-redux"
+import { createRentBill } from "../../state/features/tenant_slice"
 
 function Rent_bill_form({validation}) {
+
     //Application state
-    const theme = useSelector((state) => state.view.theme);
-    const tenant = useSelector((state) => state.tenants.tenant);
+    const theme = useSelector((state) => state.view.theme)
+    const tenant = useSelector((state) => state.tenants.tenant)
 
     //Component state
-    const [apartment, setApartment] = useState("");
-    const [month, setMonth] = useState("");
-    const [year, setYear] = useState("");
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    const [apartment, setApartment] = useState("")
+    const [month, setMonth] = useState("")
+    const [year, setYear] = useState("")
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
 
     //Dispatcher setup
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     //Modification function
 
@@ -23,12 +24,12 @@ function Rent_bill_form({validation}) {
         month: setMonth,
         year: setYear,
         apartment: setApartment
-    };
+    }
     
     const onChange = (e) => {
-        setters[e.target.id](e.target.options[e.target.options.selectedIndex].value);
-        setSuccess("");
-    };
+        setters[e.target.id](e.target.options[e.target.options.selectedIndex].value)
+        setSuccess("")
+    }
 
     //Submit function
     const onSubmit = (e) => {
@@ -42,11 +43,11 @@ function Rent_bill_form({validation}) {
         }
         dispatch(createRentBill(request))
         validation()
-    };
+    }
 
     return (
         <div>
-            <form onSubmit={(e) => {onSubmit(e);}} cl>
+            <form onSubmit={(e) => onSubmit(e)} cl>
                 
                 <div className="mb-3">
                     <label for="apartment" className="form-label">Apartement</label>
@@ -92,6 +93,7 @@ function Rent_bill_form({validation}) {
                 <div className="d-flex justify-content-center">
                     <button type="submit" className="btn btn-success">Envoyer</button>
                 </div>
+
             </form>
         </div>
     )

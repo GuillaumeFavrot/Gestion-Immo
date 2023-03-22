@@ -1,9 +1,11 @@
-import React from "react";
-import TableHeading from "./TableHeading";
-import TableEntry from "./TableEntry";
-import { useSelector } from "react-redux";
+import React from "react"
+import TableHeading from "./Table_heading"
+import TableEntry from "./Table_entry"
+import { useSelector } from "react-redux"
 
 function Table({ headings, data, consult, deletion, pay, select, validation, noborder, modification }) {
+
+  //Application state
   const theme = useSelector((state) => state.view.theme)
   
   return (

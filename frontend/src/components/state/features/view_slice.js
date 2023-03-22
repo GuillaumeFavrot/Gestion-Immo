@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
 
 const viewSlice = createSlice({
   name: "view",
@@ -16,7 +16,7 @@ const viewSlice = createSlice({
       state.page = action.payload;
     }
   }
-});
+})
 
-export const { modifyPage } = viewSlice.actions;
-export default viewSlice.reducer;
+export const { modifyPage } = viewSlice.actions
+export default viewSlice.reducer

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import { useSelector, useDispatch } from "react-redux";
-import { receiptRequest } from '../../state/features/tenantSlice';
+import { useSelector, useDispatch } from "react-redux"
+import { receiptRequest } from '../../state/features/tenant_slice'
 
 function ReceiptForm({validation}) {
     
@@ -72,7 +72,7 @@ function ReceiptForm({validation}) {
 
     return (
         <div>
-            <form onSubmit={(e) => {onSubmit(e);}} cl>
+            <form onSubmit={(e) => onSubmit(e)} cl>
                 
                 <div className="mb-3">
                     <label for="apartment" className="form-label">Apartement</label>
@@ -96,6 +96,7 @@ function ReceiptForm({validation}) {
                 <div className="d-flex justify-content-center">
                     <button type="submit" className="btn btn-success">Envoyer</button>
                 </div>
+
             </form>
         </div>
     )

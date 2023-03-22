@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 
-function EntryElement({ heading, entry }) {
+function Entry_element({ heading, entry }) {
   let info = entry[heading]
 
   if (info === true) {
@@ -13,4 +13,4 @@ function EntryElement({ heading, entry }) {
   return <td>{info}</td>;
 }
 
-export default EntryElement;
+export default Entry_element;

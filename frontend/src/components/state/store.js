@@ -4,10 +4,10 @@
 // The present template has only one reducers but a more complex app will have multiple.
 // For more information on Redux setup refer to the official documentation : https://redux.js.org/
 
-import { configureStore } from "@reduxjs/toolkit";
-import viewReducer from "./features/viewSlice";
-import tenantReducer from "./features/tenantSlice";
-import apartmentReducer from "./features/apartmentSlice";
+import { configureStore } from "@reduxjs/toolkit"
+import viewReducer from "./features/view_slice"
+import tenantReducer from "./features/tenant_slice"
+import apartmentReducer from "./features/apartment_slice"
 
 export default configureStore({
   reducer: {
@@ -15,4 +15,4 @@ export default configureStore({
     tenants: tenantReducer,
     apartments: apartmentReducer
   }
-});
+})

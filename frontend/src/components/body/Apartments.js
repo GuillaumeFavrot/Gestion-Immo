@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Table from "./table/Table";
-import Tools from "./Tools";
-import { getApartments } from "../state/features/apartmentSlice";
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import Table from "./table/Table"
+import Tools from "./Tools"
+import { getApartments } from "../state/features/apartment_slice"
 
 function Apartments() {
-  const page = useSelector((state) => state.view.page);
-  const apartments = useSelector((state) => state.apartments);
 
+  //Application state
+  const page = useSelector((state) => state.view.page)
+  const apartments = useSelector((state) => state.apartments)
+
+  //Usedispatch setups
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -28,4 +31,4 @@ function Apartments() {
   );
 }
 
-export default Apartments;
+export default Apartments

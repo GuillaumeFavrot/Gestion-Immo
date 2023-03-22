@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from 'axios'
 
 //URL and axios setup
 
@@ -20,7 +20,7 @@ const api = axios.create({
     Accept: "application/json",
     "Content-Type": "application/json",
   },
-});
+})
 
 // Action creators
 // All action creators are rigged to handle basic CRUD operations and throw query errors.
@@ -437,6 +437,6 @@ const apartmentSlice = createSlice({
       state.statusText = error.message === 'Network Error' ? 'DELETE request failed with status code 404' : `DELETE ${error.message}`
     },
   },
-});
+})
 
-export default apartmentSlice.reducer;
+export default apartmentSlice.reducer
