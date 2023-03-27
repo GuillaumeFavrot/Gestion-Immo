@@ -238,7 +238,7 @@ def update_apartment_data():
     db.session.commit()
 
     apartment = Apartment.query.get(data['apartment_id'])
-    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).one())
+    apartment.tenant = tenant_schema.dump(Tenant.query.filter(Tenant.id == apartment.__dict__['current_tenant_id']).all())
     apartment.deposit_bills = deposit_bills_schema.dump(Deposit_bill.query.filter(Deposit_bill.apartment_id == data['apartment_id']).all())
     apartment.rent_bills = rent_bills_schema.dump(Rent_bill.query.filter(Rent_bill.apartment_id == data['apartment_id']).all())
     apartment.inventories  = inventories_schema.dump(Inventory.query.filter(Inventory.apartment_id == data['apartment_id']).all())
