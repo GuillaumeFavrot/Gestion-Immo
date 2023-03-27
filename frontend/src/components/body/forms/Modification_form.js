@@ -25,26 +25,102 @@ function Modification_form({item, info, validation}) {
         setSuccess("")
     }
 
-    //Submit function
-    const onSubmit = (e) => {
-        e.preventDefault()
-        if (page === "Apartment") {
-            let request = {
-                apartment_id: apartment.id,
-                data_type: info[1].name,
-                new_data: data
+    //tenant modification function
+    const tenantModification = () => {
+        if (info[1].name === "caf_payment") {
+            if (data === "false") {
+                let request = {
+                    tenant_id: tenant.id,
+                    data_type: info[1].name,
+                    new_data: false
+                }
+                dispatch(updateTenant(request))
+                setError("")
+                validation()                
+            } else if (data === 'true') {
+                let request = {
+                    tenant_id: tenant.id,
+                    data_type: info[1].name,
+                    new_data: true
+                }
+                dispatch(updateTenant(request))
+                setError("")
+                validation()              
             }
-            dispatch(updateApartment(request))
-        } else if (page === "Tenant") {
+        }
+
+        else {
             let request = {
                 tenant_id: tenant.id,
                 data_type: info[1].name,
                 new_data: data
             }
             dispatch(updateTenant(request))
+            setError("")
+            validation()             
         }
-        setError("")
-        validation()
+
+    }
+
+    //Submit function
+    const onSubmit = (e) => {
+        e.preventDefault()
+        let letters = /^[A-Za-z]/
+        if (page === "Apartment") {
+            console.log("apartment")
+            if (parseInt(data) < 0 || parseInt(data) === 0 || letters.test(data)) {
+                setError("Le montant saisi doit être un nombre décimal positif non nul")
+            }
+            else {
+                let request = {
+                    apartment_id: apartment.id,
+                    data_type: info[1].name,
+                    new_data: data
+                }
+                dispatch(updateApartment(request))
+                setError("")
+                validation()                
+            }
+
+        } else if (page === "Tenant") {
+
+            if (info[1].name === 'firstname' || info[1].name === 'lastname' ) {
+                if (/\d/.test(data)) {
+                    setError('Le nom ou le prénom ne peuvent contenir de nombres')
+                }
+                else {
+                    tenantModification()
+                }
+            }
+
+            else if (info[1].name === 'email') {
+                let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
+                if (regex.test(data)) {
+                    tenantModification()
+                }
+                else {
+                    setError("L'e-mail saisi est invalide")
+                }
+            }
+
+            else if (info[1].name === 'caf_payment') {
+                if (data === 'true' || data === 'false') {
+                    tenantModification()
+                }
+                else {
+                    setError("La valeur saisie doit être un booléen")
+                }
+            }
+
+            else if (info[1].name === 'apl_amount') {
+                if (data < 0 || data === 0 || letters.test(data)) {
+                    setError("Le montant saisi doit être un nombre décimal positif non nul")
+                }
+                else {
+                    tenantModification()
+                }
+            }
+        }
     }
 
     return (
@@ -61,6 +137,13 @@ function Modification_form({item, info, validation}) {
                         required
                         value={data}
                     ></input>
+                </div>
+
+                <div className={error !== '' ? "d-block text-danger bold text-center mb-3" : 'd-none'}>
+                    {error}
+                </div>
+                <div className={success !== '' ? "d-block text-success bold text-center mb-3" : 'd-none'}>
+                    {success}
                 </div>
 
                 <div className="d-flex justify-content-center">

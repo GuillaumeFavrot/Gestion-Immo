@@ -337,6 +337,7 @@ const apartmentSlice = createSlice({
     },
     [deleteApartment.fulfilled]: (state, { payload } ) => {
       let res = JSON.parse(payload)
+      console.log(res.data)
       state.loading = false
       state.statusText = `DELETE Request ${res.statusText} with status code ${res.status}`
       state.apartments = res.data

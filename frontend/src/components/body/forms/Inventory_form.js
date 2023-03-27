@@ -43,32 +43,41 @@ function Inventory_form({validation, modification, inventory}) {
     //Submit function
     const onSubmit = (e) => {
         e.preventDefault()
-        setError("")
-        if (modification === true) {
-            let data = {
-                id: inventory.id,
-                apartment_id: inventory.apartment_id,
-                tenant_id: inventory.tenant_id,
-                inventory_type: inventory_type,
-                date: date,
-                remarks: remarks,
+        let numbers = /^[0-9]+$/
+        if (remarks.match(numbers)){
+            setError("Une remarque ne peut pas contenir que des nombres")
+        }
+        else {
+            setError("")
+            if (modification === true) {
+                setSuccess("Etat des lieux modifié")
+                let data = {
+                    id: inventory.id,
+                    apartment_id: inventory.apartment_id,
+                    tenant_id: inventory.tenant_id,
+                    inventory_type: inventory_type,
+                    date: date,
+                    remarks: remarks,
+                }
+                dispatch(modifyInventory(data))
+                validation()
+                setInitialized(false)
+            } else {
+                setSuccess("Etat des lieux ajouté")
+                let data = {
+                    apartment_id: apartment.id,
+                    tenant_id: apartment.current_tenant_id,
+                    inventory_type: inventory_type,
+                    date: date,
+                    remarks: remarks,
+                }
+                dispatch(createInventory(data))
+                validation()
+                setInitialized(false)           
             }
-            dispatch(modifyInventory(data))
-            validation()
-            setInitialized(false)
-        } else {
-            let data = {
-                apartment_id: apartment.id,
-                tenant_id: apartment.current_tenant_id,
-                inventory_type: inventory_type,
-                date: date,
-                remarks: remarks,
-            }
-            dispatch(createInventory(data))
-            validation()
-            setInitialized(false)           
         }
     }
+
     return (
         <div>
             <form onSubmit={(e) => onSubmit(e)}>
@@ -109,6 +118,13 @@ function Inventory_form({validation, modification, inventory}) {
                         required
                         value={remarks}
                     ></textarea>
+                </div>
+
+                <div className={error !== '' ? "d-block text-danger bold text-center mb-3" : 'd-none'}>
+                    {error}
+                </div>
+                <div className={success !== '' ? "d-block text-success bold text-center mb-3" : 'd-none'}>
+                    {success}
                 </div>
 
                 <div className="d-flex justify-content-center">

@@ -76,7 +76,7 @@ function Apartment() {
 
                 <button className={`btn btn-outline-secondary text-${theme.text} me-2`} onClick={() => tenantDepature()}>Départ du locataire</button>
 
-                <button className={`btn btn-outline-secondary text-${theme.text}`}nonClick={() => createInventory()}>Ajouter un état des lieux</button>
+                <button className={`btn btn-outline-secondary text-${theme.text}`} onClick={() => createInventory()}>Ajouter un état des lieux</button>
             </div>
 
             <div>

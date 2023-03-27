@@ -41,17 +41,42 @@ function TenantForm({validation}) {
 
     //Submit function
     const onSubmit = (e) => {
+        let numbers = /^[0-9]+$/
+        let letters = /^[A-Za-z]/
+        let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
+
         e.preventDefault()
-        setError("")
-        let data = {
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            caf_payment: caf_payment,
-            apl_amount: apl_amount,
+
+        if (/\d/.test(firstname)) {
+           setError('Le nom ou le prénom ne peuvent contenir de nombres') 
         }
-        dispatch(createTenant(data))
-        validation()
+            
+        else if (/\d/.test(lastname)) {
+            setError('Le nom ou le prénom ne peuvent contenir de nombres') 
+        }
+
+        else if (!regex.test(email)) {
+            setError("L'e-mail saisi est invalide") 
+        }
+
+        else if (apl_amount < 0 || letters.test(apl_amount)) {
+            setError("Le montant d'apl saisi doit être un nombre décimal positif") 
+        }
+
+        else {
+            
+            setError("")
+            let data = {
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                caf_payment: caf_payment,
+                apl_amount: apl_amount,
+            }
+            dispatch(createTenant(data))
+            validation()            
+        }
+
     }
 
     return (
@@ -113,6 +138,13 @@ function TenantForm({validation}) {
                         id="apl_amount"
                         onChange={(e) => onChange(e)}
                     ></input>
+                </div>
+
+                <div className={error !== '' ? "d-block text-danger bold text-center mb-3" : 'd-none'}>
+                    {error}
+                </div>
+                <div className={success !== '' ? "d-block text-success bold text-center mb-3" : 'd-none'}>
+                    {success}
                 </div>
 
                 <div className="d-flex justify-content-center">

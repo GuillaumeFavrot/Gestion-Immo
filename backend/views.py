@@ -251,8 +251,9 @@ def delete_apartment():
     apartment = Apartment.query.get(id)
     db.session.delete(apartment)
     db.session.commit()
-    apartments = Tenant.query.all()
-    return apartment_schema.dump(apartments)
+    apartments = Apartment.query.all()
+    print()
+    return apartments_schema.dump(apartments)
 
 # Assign a tenant to an apartment
 @routes.route("/api/apartment/assignment", methods=['PUT'])

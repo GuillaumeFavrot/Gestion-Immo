@@ -59,15 +59,29 @@ function Bill_payment_form({validation, bill}) {
 
     //Form submit function
     const onSubmit = (e) => {
-        validation()
         e.preventDefault()
-        let request = {
-            type: bill_type,
-            tenant: tenant.id,
-            bill: bill.id,
-            paid_amount: paid_amount
+        if (parseInt(paid_amount) < 0 || parseInt(paid_amount) === 0 ) {
+            setError("Le montant de règlement saisi doit être un nombre décimal positif non nul")
         }
-        dispatch(payBill(request))
+
+        else if (parseInt(paid_amount) > bill['total_amount'] - bill['paid_amount'] - apl_amount) {
+            setError("Le montant de règlement saisi est supérieur au montant dû")
+        }
+
+        else {
+            setError("")
+            setSuccess("Règlement enregistré")
+            validation()
+            e.preventDefault()
+            let request = {
+                type: bill_type,
+                tenant: tenant.id,
+                bill: bill.id,
+                paid_amount: paid_amount
+            }
+            dispatch(payBill(request))
+        }
+
     }
 
     return (
@@ -131,6 +145,14 @@ function Bill_payment_form({validation, bill}) {
                         <label for="paid_amount" className="form-label">Montant que vous souhaitez règler</label>
                         <input type="number" step="0.01" className={`form-control bg-${theme.mainBackground}`} id="paid_amount" aria-describedby="adressHelp" onChange={(e) => onChange(e)}></input>
                     </div>
+                    
+                    <div className={error !== '' ? "d-block text-danger bold text-center mb-3" : 'd-none'}>
+                        {error}
+                    </div>
+                    <div className={success !== '' ? "d-block text-success bold text-center mb-3" : 'd-none'}>
+                        {success}
+                    </div>
+
                     <div className="d-flex justify-content-center">
                         <button type="submit" className="btn btn-success">Envoyer</button>
                     </div>

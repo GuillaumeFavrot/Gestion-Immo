@@ -51,21 +51,44 @@ function ApartmentForm({validation}) {
 
     //Submit function
     const onSubmit = (e) => {
+        let numbers = /^[0-9]+$/
+        let letters = /^[A-Za-z]/
         e.preventDefault()
-        setError("")
-        let data = {
-            address_1: address_1,
-            address_2: address_2,
-            zipcode: zipcode,
-            city: city,
-            monthly_charges: monthly_charges,
-            monthly_rent: monthly_rent,
-            deposit: deposit,
-            in_management: in_management,
+        if (address_1.length < 5 )
+            setError("L'adresse saisie est trop courte pour être une adresse viable")
+        else if (address_1.match(numbers)){
+            setError("Une adresse viable ne peut contenir que des nombres")
         }
-        dispatch(createApartment(data))
-        validation()
+        else if (/\d/.test(city)){
+            setError("Le nom d'une ville ne peut contenir de nombres")
+        }
+        else if (monthly_charges < 0 || monthly_charges === 0 || letters.test(monthly_charges)) {
+            setError("Le montant de charge saisi doit être un nombre décimal positif non nul")
+        }
+        else if (monthly_rent < 0 || monthly_rent === 0 || letters.test(monthly_rent)) {
+            setError("Le montant de loyer saisi doit être un nombre décimal positif non nul")
+        }
+        else if (deposit < 0 || deposit === 0 || letters.test(deposit)) {
+            setError("Le montant de caution saisi doit être un nombre décimal positif non nul")
+        }
+        else {
+            setError("")
+            setSuccess("Appartement créé")
+            let data = {
+                address_1: address_1,
+                address_2: address_2,
+                zipcode: zipcode,
+                city: city,
+                monthly_charges: monthly_charges,
+                monthly_rent: monthly_rent,
+                deposit: deposit,
+                in_management: in_management,
+            }
+            dispatch(createApartment(data))
+            validation()                
+        }
     }
+
 
     return (
         <div>
@@ -161,6 +184,13 @@ function ApartmentForm({validation}) {
                     onChange={(e) => onChange(e)}
                 ></input>
                 <label className="form-check-label" for="in_management">En gestion ?</label>
+            </div>
+
+            <div className={error !== '' ? "d-block text-danger bold text-center mb-3" : 'd-none'}>
+                {error}
+            </div>
+            <div className={success !== '' ? "d-block text-success bold text-center mb-3" : 'd-none'}>
+                {success}
             </div>
 
             <div className="d-flex justify-content-center">
