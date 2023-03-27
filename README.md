@@ -191,4 +191,7 @@ $ docker-compose down                                                           
 
 # Application specific details
 
+
+## Pytest test suite command 
+
 pytest --cov=. --cov-report term-missing -p no:faulthandler
