@@ -1,7 +1,4 @@
-# FRPD - FLASK-REACT-POSTRGRES-DOCKER TEMPLATE
-
-This template has been created as a tool to speed up the process of creation and hosting of a fullstack app.
-
+# GESTIMMO - Gestion immobilière
 
 ## Stack description
 
