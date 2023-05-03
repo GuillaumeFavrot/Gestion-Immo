@@ -91,7 +91,7 @@ $ npn install                                                                   
 
 To launch the Flask web server be sure to have the virtual environment up and running then naviguate in root directory of the app and use the command :
 
-$ python3 manage.py run                                                                                                                                                  ...$
+$ python manage.py run                                                                                                                                                  ...$
 
 This command will launch the python server that will be avaiblable at the following address (local) : 127.0.0.1:5000 or localhost:5000
 

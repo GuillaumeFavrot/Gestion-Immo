@@ -5,10 +5,9 @@ from flask.cli import FlaskGroup
 # $ python manage.py run : This command launches the flask web server
 # $ python manage.py create_db : This command creates a new Postgres database (Warning: This will erase all previously existing database)
 
+
 from backend.app import app
 from backend.exts import db
-
-import os
 
 cli = FlaskGroup(app)
 
