@@ -68,6 +68,7 @@ function ReceiptForm({validation}) {
         }
         dispatch(receiptRequest(request))
         validation()
+        alert(`Les quittances de loyer demandées ont été envoyées à l\'adresse: ${tenant.email}`)
     }
 
     return (

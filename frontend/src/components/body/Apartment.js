@@ -42,6 +42,7 @@ function Apartment() {
     }
 
     let tenantDepature = () => {
+        let email = tenants.tenant.email
         let response = prompt("Saisissez l'ID du locataire pour confirmer la demande de départ")
         if (response === apartments.apartment.current_tenant_id) {
         let exit_inventory_done = false
@@ -55,7 +56,7 @@ function Apartment() {
         }
         if (exit_inventory_done === true) {
             dispatch(unassignTenant({apartment_id: apartments.apartment.id, tenant_id: apartments.apartment.current_tenant_id}))
-            alert('Le départ du locataire a bien été entregistré')
+            alert(`Le départ du locataire a bien été entregistré, un e-mail de confirmation ainsi que la balance locataire ont été envoyés à l\'adresse email du locataire.`)
         } else {
             alert("Il convient de réaliser un état des lieux de sortie avant d'acter la sortie d'un locataire")
         }
