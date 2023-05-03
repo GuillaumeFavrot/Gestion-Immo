@@ -21,4 +21,5 @@ COPY . .
 RUN pip3 install -r ./requirements.txt
 
 # run entrypoint.sh
+RUN ["chmod", "+x", "/app/entrypoint.sh"]
 ENTRYPOINT ["/app/entrypoint.sh"]
