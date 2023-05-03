@@ -1,14 +1,13 @@
 from pandas import DataFrame
 
-from backend.application.utilities.pdf_converter import convert_documents_to_pdf
 from backend.application.utilities.email_manager import Email_manager
+from backend.application.utilities.pdf_processor import Pdf_processor
 
 from backend.application.models.apartment import Apartment
 from backend.application.models.tenant import Tenant
 
 from backend.application.utilities.editor_input_checker import editor_input_checks_suite
 
-from mailmerge import MailMerge
 
 months = {
     "january": "1er au 31 janvier",
@@ -65,10 +64,6 @@ def receipt_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, re
     #If all checks have been successfuly passed the receipt is created
     Receipt_editor.create_receipt(tenant=tenant, apartment=apartment, rents=rents, requested_period=requested_period)
     
-    #Conversion of the receipt to pdf 
-    if pdf == True:
-        convert_documents_to_pdf()
-    
     #Creation of the email
     email = Email_manager.create_email(
         receiver_email=tenant.email,
@@ -87,7 +82,6 @@ def receipt_processor(tenant: Tenant, apartment: Apartment, rents: DataFrame, re
     return "Required receipts successfuly created and sent"
 
 input_folder = "/backend/application/documents_template"
-output_folder = "/backend/application/documents_output"
 
 class Receipt_editor():
 
@@ -109,8 +103,8 @@ class Receipt_editor():
         return True
     
 
-    def create_receipt(tenant: Tenant, apartment: Apartment, rents: DataFrame, requested_period: list) -> bool:
-        """Create a rent receipt in .docx format for each month of the requested period"""
+    def create_receipt(tenant: Tenant, apartment: Apartment, rents: DataFrame, requested_period: list) -> str:
+        """Retrieves the raw text from the pdf template and return the edited text"""
         
         for period_slice in requested_period:
 
@@ -120,27 +114,28 @@ class Receipt_editor():
             mois = months[month].split(" ")[-1]
 
             #Selection of the appropriate template
-            document = MailMerge(f".{input_folder}/rent_receipt_template.docx")
-            
-            #Merger of the apartment and tenant data into the receipt template
-            document.merge(
-                    period = months[period_slice.split("_")[0]], 
-                    total_rent_paid = str(rents.where(rents.period == period_slice).paid_amount.values[0]), 
-                    address_2 = apartment.address_2, 
-                    month = mois, 
-                    firstname = tenant.firstname, 
-                    year = year, 
-                    monthly_rent = str(apartment.monthly_rent), 
-                    address_1 = apartment.address_1, 
-                    lastname = tenant.lastname, 
-                    zipcode = apartment.zipcode, 
-                    management_fees_string = f"Frais de gestion: {apartment.management_fees} euros" if apartment.in_management == True else "", 
-                    city = apartment.city, 
-                    charges = str(apartment.monthly_charges)
-                )
+            text = Pdf_processor.pdf_reader(path=f".{input_folder}/rent_receipt_template.pdf")
 
-            #Save the document in a .docx format
-            document.write(f".{output_folder}/{tenant.lastname}_{tenant.firstname}_Quittance_de_loyer_{mois}_{year}.docx")
+            #Definition of fields to edit in the template text
+            fields = {
+                "**period" : months[period_slice.split("_")[0]], 
+                "**total_rent_paid" : str(rents.where(rents.period == period_slice).paid_amount.values[0]), 
+                "**address_2" : apartment.address_2, 
+                "**month2" : mois, 
+                "**firstname" : tenant.firstname, 
+                "**year" : year, 
+                "**monthly_rent" : str(apartment.monthly_rent), 
+                "**address_1" : apartment.address_1, 
+                "**lastname" : tenant.lastname, 
+                "**zipcode" : apartment.zipcode, 
+                "**management_fees_string" : f"Frais de gestion: {apartment.management_fees} euros" if apartment.in_management == True else "", 
+                "**city" : apartment.city, 
+                "**charges" : str(apartment.monthly_charges)
+            }
+
+            text = Pdf_processor.pdf_editor(text=text, fields=fields)
+
+            Pdf_processor.pdf_creator(text=text, document_name=f"{tenant.lastname}_{tenant.firstname}_quittance_de_loyer_{period_slice}")
 
 
 

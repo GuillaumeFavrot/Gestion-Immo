@@ -11,7 +11,6 @@ from backend.application.models.bill import Rent_bill
 
 from backend.application.utilities.email_manager import Email_manager
 from backend.application.utilities.id_generator import id_gen
-from backend.application.utilities.pdf_converter import convert_documents_to_pdf
 from backend.application.utilities.editor_input_checker import editor_input_checks_suite
 
 a = Apartment(
@@ -63,14 +62,6 @@ def test_id_gen_reliability() -> None:
             error_count += 1
         ids.append(new_id)
     assert error_count == 0
-
-#Tests the pdf converter utility
-def test_pdf_converter() -> None:
-    """Checks that the pdf_converter function properly convert all .docx files in the documents_output folder to pdf"""
-    f = open("./backend/application/documents_output/test.docx", "x")
-    f.close()
-    convert_documents_to_pdf()
-    assert str(os.listdir("./backend/application/documents_output")[0]).endswith("pdf")
 
 #Tests the email manager
 email = Email_manager.create_email("dev.mail.python.68@gmail.com", "Test", "Test", email_attachments=True)

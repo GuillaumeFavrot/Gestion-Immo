@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "af72b76fe8d7a655fff002b5450634f14d991e076d4e26cda4157566649335f6"
+            "sha256": "35e2543b881ffb501f45d1ba4b75dcafa8e48917591b65a65ae2e793e8ecfc03"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -138,7 +138,6 @@
             "version": "==1.1.14"
         },
         "coverage": {
-            "extras": [],
             "hashes": [
                 "sha256:0339dc3237c0d31c3b574f19c57985fcbe494280153bbcad33f2cdf469f4ac3e",
                 "sha256:09643fb0df8e29f7417adc3f40aaf379d071ee8f0350ab290517c7004f05360b",
@@ -234,6 +233,15 @@
             ],
             "index": "pypi",
             "version": "==3.0.3"
+        },
+        "fpdf": {
+            "hashes": [
+                "sha256:0a94eb783ee933e32a44ad949a1aa6c3ca6fb35b608db53f8b216aec52fc1fb5",
+                "sha256:125840783289e7d12552b1e86ab692c37322e7a65b96a99e0ea86cca041b6779",
+                "sha256:9542f6ad0791d673955da954a0cf3554a0affac79deab87bee06b9b4d4e60990"
+            ],
+            "index": "pypi",
+            "version": "==1.7.2"
         },
         "greenlet": {
             "hashes": [
@@ -613,6 +621,14 @@
             ],
             "index": "pypi",
             "version": "==3.0.9"
+        },
+        "pypdf": {
+            "hashes": [
+                "sha256:0c34620e4bbceaf9632b6b7a8ec6d4a4d5b0cdee6e39bdb86dc91a8c44cb0f19",
+                "sha256:761ad6dc33abb78d358b4ae42206c5f185798f8b537be9b8fdecd9ee834a894d"
+            ],
+            "index": "pypi",
+            "version": "==3.8.1"
         },
         "pytest": {
             "hashes": [
