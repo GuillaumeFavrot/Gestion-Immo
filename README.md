@@ -164,7 +164,7 @@ This command will generate a build folder in the frontend server containing stat
 
 To launch the app open a terminal in the root folder of the app and run the following command :
 
-$ d                                                                                                                                          ...$
+$ docker-compose up -d --build                                                                                                                                          ...$
 
 NOTE:  Ensure the docker deamon is active before using any docker command
 
